@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>¿Cuánto te cuesta NO hacer el reto? | WeDo Transformations</title>
+<meta name="description" content="Descubre cuánto dinero pierdes cada mes por no cuidar tu salud. Calculadora gratuita de WeDo Transformations." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --rojo: #E53935;
+    --rojo2: #FF6F00;
+    --verde: #00C853;
+    --oscuro: #0D0D0D;
+    --oscuro2: #1A1A1A;
+    --blanco: #FFFFFF;
+    --gris: rgba(255,255,255,0.06);
+    --borde: rgba(255,255,255,0.1);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--oscuro);
+    color: var(--blanco);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(160deg, #0D0D0D 0%, #1a0505 60%, #0D0D0D 100%);
+    padding: 32px 20px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(229,57,53,0.2) 0%, transparent 70%);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,111,0,0.15) 0%, transparent 70%);
+  }
+
+  .badge {
+    display: inline-block;
+    background: var(--rojo);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 9vw, 54px);
+    line-height: 1.0;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero h1 span { color: var(--rojo); }
+
+  .hero p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.65);
+    max-width: 340px;
+    margin: 0 auto 20px;
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+  }
+
+  .alerta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(229,57,53,0.15);
+    border: 1px solid rgba(229,57,53,0.4);
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 13px;
+    color: #FF8A80;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* PAIS SELECTOR */
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 16px 60px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 24px 0 10px;
+  }
+
+  .pais-select {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 2px solid var(--borde);
+    background: var(--gris);
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23ffffff' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 44px;
+  }
+
+  .pais-select:focus { border-color: var(--rojo); }
+
+  /* SLIDERS */
+  .gasto-card {
+    background: var(--gris);
+    border: 1px solid var(--borde);
+    border-radius: 20px;
+    padding: 18px 16px;
+    margin-bottom: 12px;
+  }
+
+  .gasto-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .gasto-info { display: flex; align-items: center; gap: 10px; }
+
+  .gasto-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .gasto-icon.rojo { background: rgba(229,57,53,0.2); }
+  .gasto-icon.naranja { background: rgba(255,111,0,0.2); }
+  .gasto-icon.amarillo { background: rgba(255,214,0,0.15); }
+  .gasto-icon.azul { background: rgba(30,136,229,0.2); }
+  .gasto-icon.rosa { background: rgba(233,30,99,0.2); }
+
+  .gasto-titulo {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .gasto-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    margin-top: 2px;
+  }
+
+  .gasto-valor {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--rojo);
+    min-width: 80px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  input[type=range] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.15);
+    outline: none;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--rojo);
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(229,57,53,0.5);
+  }
+
+  /* RESULTADO */
+  .resultado-section {
+    margin-top: 28px;
+  }
+
+  .total-card {
+    background: linear-gradient(135deg, rgba(229,57,53,0.15), rgba(255,111,0,0.1));
+    border: 1px solid rgba(229,57,53,0.35);
+    border-radius: 24px;
+    padding: 28px 20px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .total-label {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 8px;
+  }
+
+  .total-mes {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 72px;
+    line-height: 1;
+    color: var(--rojo);
+    margin-bottom: 4px;
+  }
+
+  .total-ano-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .total-ano-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+  }
+
+  .total-ano {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: #FF8A80;
+  }
+
+  .vs-reto {
+    background: rgba(0,200,83,0.1);
+    border: 1px solid rgba(0,200,83,0.25);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .vs-reto-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.4;
+  }
+
+  .vs-reto-precio {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: var(--verde);
+    text-align: right;
+    flex-shrink: 0;
+    margin-left: 12px;
+  }
+
+  /* MENSAJE IMPACTO */
+  .impacto-card {
+    background: var(--gris);
+    border: 1px solid var(--borde);
+    border-left: 3px solid var(--rojo);
+    border-radius: 0 16px 16px 0;
+    padding: 18px 16px;
+    margin-bottom: 16px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.85);
+  }
+
+  .impacto-numero {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--rojo);
+  }
+
+  /* CTA */
+  .btn-cta {
+    width: 100%;
+    padding: 18px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, var(--rojo), var(--rojo2));
+    color: white;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 24px rgba(229,57,53,0.4);
+    transition: transform 0.15s, box-shadow 0.15s;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+  }
+
+  .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(229,57,53,0.5); }
+
+  .btn-wa {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    border: none;
+    background: #25D366;
+    color: white;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.3);
+    transition: transform 0.15s;
+  }
+
+  .btn-wa:hover { transform: translateY(-2px); }
+
+  .social-proof {
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255,255,255,0.35);
+    margin-top: 20px;
+  }
+
+  .anos-perdidos {
+    background: rgba(229,57,53,0.08);
+    border: 1px solid rgba(229,57,53,0.2);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .anos-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--rojo);
+    line-height: 1;
+  }
+
+  .anos-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 4px;
+  }
+
+  .footer-brand {
+    text-align: center;
+    padding: 24px 0;
+    font-size: 12px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(16px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  .fade-in { animation: fadeUp 0.5s ease; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="badge">WeDo Transformations</div>
+  <h1>¿Cuánto te cuesta<br><span>NO hacer</span><br>el reto?</h1>
+  <p>Descubre en dinero real lo que pierdes cada mes por no cuidar tu salud</p>
+  <div class="alerta">⚠️ Los números te van a sorprender</div>
+</div>
+
+<div class="container">
+
+  <div class="section-label">¿De qué país eres?</div>
+  <select class="pais-select" id="pais" onchange="actualizarTodo()">
+    <option value="ES">🇪🇸 España (€)</option>
+    <option value="MX">🇲🇽 México (MXN)</option>
+    <option value="NI">🇳🇮 Nicaragua (USD)</option>
+    <option value="AR">🇦🇷 Argentina (ARS)</option>
+    <option value="BO">🇧🇴 Bolivia (Bs)</option>
+    <option value="CL">🇨🇱 Chile (CLP)</option>
+    <option value="CO">🇨🇴 Colombia (COP)</option>
+    <option value="CR">🇨🇷 Costa Rica (CRC)</option>
+    <option value="EC">🇪🇨 Ecuador (USD)</option>
+    <option value="SV">🇸🇻 El Salvador (USD)</option>
+    <option value="GT">🇬🇹 Guatemala (USD)</option>
+    <option value="HN">🇭🇳 Honduras (USD)</option>
+    <option value="PA">🇵🇦 Panamá (USD)</option>
+    <option value="PE">🇵🇪 Perú (PEN)</option>
+    <option value="PY">🇵🇾 Paraguay (Gs)</option>
+    <option value="PR">🇵🇷 Puerto Rico (USD)</option>
+    <option value="DO">🇩🇴 R. Dominicana (USD)</option>
+    <option value="UY">🇺🇾 Uruguay (UYU)</option>
+    <option value="VE">🇻🇪 Venezuela (VES)</option>
+  </select>
+
+  <div class="section-label" style="margin-top:28px">¿Cuánto gastas al mes en esto?</div>
+
+  <div class="gasto-card">
+    <div class="gasto-header">
+      <div class="gasto-info">
+        <div class="gasto-icon rojo">💊</div>
+        <div>
+          <div class="gasto-titulo">Pastillas, suplementos y dietas</div>
+          <div class="gasto-sub">Productos que compras y no funcionan</div>
+        </div>
+      </div>
+      <div class="gasto-valor" id="val-pastillas">0</div>
+    </div>
+    <input type="range" id="sl-pastillas" min="0" max="100" value="20" step="1" oninput="actualizarTodo()" />
+  </div>
+
+  <div class="gasto-card">
+    <div class="gasto-header">
+      <div class="gasto-info">
+        <div class="gasto-icon naranja">☕</div>
+        <div>
+          <div class="gasto-titulo">Cafés, energéticos y ultraprocesados</div>
+          <div class="gasto-sub">Para aguantar el día sin energía</div>
+        </div>
+      </div>
+      <div class="gasto-valor" id="val-cafe">0</div>
+    </div>
+    <input type="range" id="sl-cafe" min="0" max="100" value="15" step="1" oninput="actualizarTodo()" />
+  </div>
+
+  <div class="gasto-card">
+    <div class="gasto-header">
+      <div class="gasto-info">
+        <div class="gasto-icon amarillo">🏥</div>
+        <div>
+          <div class="gasto-titulo">Médicos y farmacia</div>
+          <div class="gasto-sub">Por problemas relacionados con tu salud</div>
+        </div>
+      </div>
+      <div class="gasto-valor" id="val-medico">0</div>
+    </div>
+    <input type="range" id="sl-medico" min="0" max="100" value="10" step="1" oninput="actualizarTodo()" />
+  </div>
+
+  <div class="gasto-card">
+    <div class="gasto-header">
+      <div class="gasto-info">
+        <div class="gasto-icon azul">👗</div>
+        <div>
+          <div class="gasto-titulo">Ropa que no usas</div>
+          <div class="gasto-sub">Porque no te sientes bien con tu cuerpo</div>
+        </div>
+      </div>
+      <div class="gasto-valor" id="val-ropa">0</div>
+    </div>
+    <input type="range" id="sl-ropa" min="0" max="100" value="10" step="1" oninput="actualizarTodo()" />
+  </div>
+
+  <div class="gasto-card">
+    <div class="gasto-header">
+      <div class="gasto-info">
+        <div class="gasto-icon rosa">😔</div>
+        <div>
+          <div class="gasto-titulo">Productividad perdida</div>
+          <div class="gasto-sub">Por cansancio, falta de foco y mal humor</div>
+        </div>
+      </div>
+      <div class="gasto-valor" id="val-productividad">0</div>
+    </div>
+    <input type="range" id="sl-productividad" min="0" max="100" value="25" step="1" oninput="actualizarTodo()" />
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="resultado-section fade-in">
+
+    <div class="total-card">
+      <div class="total-label">Pierdes cada mes</div>
+      <div class="total-mes" id="total-mes">0</div>
+      <div class="total-ano-wrap">
+        <span class="total-ano-label">Al año:</span>
+        <span class="total-ano" id="total-ano">0</span>
+      </div>
+      <div class="vs-reto">
+        <div class="vs-reto-label">Tu inversión de inicio<br><strong>para empezar hoy</strong></div>
+        <div class="vs-reto-precio" id="precio-reto">116,68€</div>
+      </div>
+    </div>
+
+    <div class="anos-perdidos">
+      <div class="anos-num" id="meses-perdidos">0</div>
+      <div class="anos-label">meses pagando por no hacer nada</div>
+    </div>
+
+    <div class="impacto-card" id="mensaje-impacto">
+      Mueve los controles para ver tu cálculo personalizado.
+    </div>
+
+    <a class="btn-cta" id="btn-manychat" href="https://wa.me/34691206789?text=Hola!%20Acabo%20de%20calcular%20cuánto%20me%20cuesta%20NO%20hacer%20el%20reto%20y%20quiero%20empezar." target="_blank">
+      QUIERO DEJAR DE PERDER DINERO →
+    </a>
+
+    <a class="btn-wa" href="https://wa.me/34691206789?text=Hola!%20Acabo%20de%20calcular%20cuánto%20me%20cuesta%20NO%20hacer%20el%20reto%20y%20quiero%20empezar." target="_blank" id="btn-wa">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      HABLAR CON AMAYA AHORA
+    </a>
+
+    <div class="social-proof">🔥 +2.400 personas ya tomaron la decisión</div>
+  </div>
+
+</div>
+
+<div class="footer-brand">WeDo Transformations · Herbalife Distributor</div>
+
+<script>
+const PAISES = {
+  ES: { simbolo: '€', multiplicador: 1,    reto: '116,68€',   retoPrecio: 116.68 },
+  MX: { simbolo: 'MXN', multiplicador: 20,  reto: '$860 MXN',  retoPrecio: 860 },
+  NI: { simbolo: 'USD', multiplicador: 1.1, reto: 'desde $73', retoPrecio: 73 },
+  AR: { simbolo: 'ARS', multiplicador: 1000,reto: '65,415 ARS',retoPrecio: 65415 },
+  BO: { simbolo: 'Bs',  multiplicador: 7,   reto: '360 Bs',    retoPrecio: 360 },
+  CL: { simbolo: 'CLP', multiplicador: 1000,reto: '43,377 CLP',retoPrecio: 43377 },
+  CO: { simbolo: 'COP', multiplicador: 4500,reto: '268,677 COP',retoPrecio: 268677 },
+  CR: { simbolo: 'CRC', multiplicador: 600, reto: '37,450 CRC',retoPrecio: 37450 },
+  EC: { simbolo: 'USD', multiplicador: 1.1, reto: '$64.81',    retoPrecio: 64.81 },
+  SV: { simbolo: 'USD', multiplicador: 1.1, reto: '$66',       retoPrecio: 66 },
+  GT: { simbolo: 'USD', multiplicador: 1.1, reto: '$72.58',    retoPrecio: 72.58 },
+  HN: { simbolo: 'USD', multiplicador: 1.1, reto: '$53.75',    retoPrecio: 53.75 },
+  PA: { simbolo: 'USD', multiplicador: 1.1, reto: '$60.65',    retoPrecio: 60.65 },
+  PE: { simbolo: 'PEN', multiplicador: 4,   reto: '196 PEN',   retoPrecio: 196.46 },
+  PY: { simbolo: 'Gs',  multiplicador: 8000,reto: '266,405 Gs',retoPrecio: 266405 },
+  PR: { simbolo: 'USD', multiplicador: 1.1, reto: '$54.95',    retoPrecio: 54.95 },
+  DO: { simbolo: 'USD', multiplicador: 1.1, reto: '$51.62',    retoPrecio: 51.62 },
+  UY: { simbolo: 'UYU', multiplicador: 45,  reto: '2,577 UYU', retoPrecio: 2577 },
+  VE: { simbolo: 'VES', multiplicador: 40,  reto: '416.51 VES',retoPrecio: 416.51 }
+};
+
+function formatNum(n, simbolo) {
+  if (n >= 1000000) return simbolo + (n/1000000).toFixed(1) + 'M';
+  if (n >= 1000) return simbolo + Math.round(n).toLocaleString();
+  return simbolo + Math.round(n * 10) / 10;
+}
+
+function actualizarTodo() {
+  const pais = document.getElementById('pais').value;
+  const config = PAISES[pais];
+  const m = config.multiplicador;
+  const s = config.simbolo;
+
+  const v1 = parseInt(document.getElementById('sl-pastillas').value) * m;
+  const v2 = parseInt(document.getElementById('sl-cafe').value) * m;
+  const v3 = parseInt(document.getElementById('sl-medico').value) * m;
+  const v4 = parseInt(document.getElementById('sl-ropa').value) * m;
+  const v5 = parseInt(document.getElementById('sl-productividad').value) * m;
+
+  document.getElementById('val-pastillas').textContent = formatNum(v1, s);
+  document.getElementById('val-cafe').textContent = formatNum(v2, s);
+  document.getElementById('val-medico').textContent = formatNum(v3, s);
+  document.getElementById('val-ropa').textContent = formatNum(v4, s);
+  document.getElementById('val-productividad').textContent = formatNum(v5, s);
+
+  const totalMes = v1 + v2 + v3 + v4 + v5;
+  const totalAno = totalMes * 12;
+  const mesesPerdidos = Math.round(totalAno / config.retoPrecio);
+
+  document.getElementById('total-mes').textContent = formatNum(totalMes, s);
+  document.getElementById('total-ano').textContent = formatNum(totalAno, s);
+  document.getElementById('precio-reto').textContent = config.reto;
+  document.getElementById('meses-perdidos').textContent = mesesPerdidos > 99 ? '+99' : mesesPerdidos;
+
+  const msg = `Hola! Acabo de calcular que me cuesta ${formatNum(totalMes, s)} al mes NO cuidarme. Al año son ${formatNum(totalAno, s)}. Quiero empezar el Reto WeDo.`;
+  const waUrl = `https://wa.me/34691206789?text=${encodeURIComponent(msg)}`;
+  document.getElementById('btn-manychat').href = waUrl;
+  document.getElementById('btn-wa').href = waUrl;
+
+  let impacto = '';
+  if (totalMes <= 0) {
+    impacto = 'Mueve los controles para descubrir cuánto te cuesta realmente no actuar.';
+  } else if (mesesPerdidos <= 1) {
+    impacto = `Con lo que gastas en UN mes sin resultados, podrías empezar el Reto WeDo HOY. ${formatNum(totalMes, s)} al mes es exactamente lo que estás perdiendo por no actuar. ¿Hasta cuándo?`;
+  } else if (mesesPerdidos <= 6) {
+    impacto = `En solo ${mesesPerdidos} meses habrás gastado lo mismo que cuesta el Reto WeDo completo — pero sin ningún resultado. Cada mes que pasa es ${formatNum(totalMes, s)} tirados a la basura.`;
+  } else {
+    impacto = `Llevas gastando ${formatNum(totalAno, s)} al año en no solucionar tu problema. Eso es ${mesesPerdidos} veces el precio del Reto WeDo. ¿Cuándo va a ser suficiente para tomar la decisión?`;
+  }
+
+  document.getElementById('mensaje-impacto').textContent = impacto;
+}
+
+actualizarTodo();
+</script>
+</body>
+</html>
