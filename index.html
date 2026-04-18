@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>¿Cuántos años tiene tu cuerpo realmente? | WeDo Transformations</title>
+<meta name="description" content="Descubre tu edad metabólica real en 60 segundos. Test gratuito de WeDo Transformations." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --naranja: #FF5722;
+    --naranja2: #FF8C00;
+    --verde: #00C853;
+    --rojo: #F44336;
+    --oscuro: #1A1A2E;
+    --gris: #F5F5F5;
+    --blanco: #FFFFFF;
+    --texto: #333;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--oscuro);
+    color: var(--blanco);
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #1A1A2E 0%, #16213E 50%, #0F3460 100%);
+    padding: 24px 20px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,87,34,0.3) 0%, transparent 70%);
+  }
+
+  .logo-badge {
+    display: inline-block;
+    background: var(--naranja);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(38px, 10vw, 56px);
+    line-height: 1.0;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+
+  .hero h1 span {
+    color: var(--naranja);
+  }
+
+  .hero p {
+    font-size: 16px;
+    color: rgba(255,255,255,0.75);
+    max-width: 340px;
+    margin: 0 auto 20px;
+    line-height: 1.5;
+  }
+
+  .urgencia {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,87,34,0.15);
+    border: 1px solid rgba(255,87,34,0.4);
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 13px;
+    color: #FFB74D;
+    font-weight: 600;
+  }
+
+  .urgencia::before { content: '⚡'; font-size: 14px; }
+
+  /* FORM CONTAINER */
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 16px 40px;
+  }
+
+  /* STEPS */
+  .step {
+    display: none;
+    animation: fadeUp 0.4s ease;
+  }
+  .step.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    padding: 20px 0 8px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--naranja), var(--naranja2));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  /* QUESTION CARD */
+  .q-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 24px 20px;
+    margin-top: 16px;
+  }
+
+  .q-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .q-title {
+    font-size: 20px;
+    font-weight: 900;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .q-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 20px;
+  }
+
+  /* INPUT STYLES */
+  .input-field {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 2px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.07);
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 12px;
+  }
+
+  .input-field:focus {
+    border-color: var(--naranja);
+  }
+
+  .input-field::placeholder { color: rgba(255,255,255,0.35); }
+
+  /* OPTIONS */
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .opt-btn {
+    background: rgba(255,255,255,0.06);
+    border: 2px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    padding: 14px 10px;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .opt-btn:hover, .opt-btn.selected {
+    background: rgba(255,87,34,0.2);
+    border-color: var(--naranja);
+    color: #FFB74D;
+  }
+
+  .opt-btn .opt-icon {
+    display: block;
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  /* SLIDER */
+  .slider-wrap {
+    padding: 8px 0;
+  }
+
+  .slider-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    color: var(--naranja);
+    text-align: center;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .slider-unit {
+    font-size: 18px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  input[type=range] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.15);
+    outline: none;
+    margin: 12px 0;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--naranja);
+    cursor: pointer;
+    box-shadow: 0 0 12px rgba(255,87,34,0.6);
+  }
+
+  .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* NEXT BUTTON */
+  .btn-next {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, var(--naranja), var(--naranja2));
+    color: white;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 20px rgba(255,87,34,0.4);
+  }
+
+  .btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,87,34,0.5); }
+  .btn-next:active { transform: scale(0.98); }
+
+  /* RESULTADO */
+  .resultado-hero {
+    text-align: center;
+    padding: 28px 0 20px;
+  }
+
+  .edad-display {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+
+  .edad-numero {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 100px;
+    line-height: 1;
+    display: block;
+  }
+
+  .edad-label {
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-top: -4px;
+    display: block;
+  }
+
+  .vs-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 40px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+  }
+
+  .vs-real { font-size: 13px; color: rgba(255,255,255,0.5); }
+  .vs-num { font-family: 'Bebas Neue', sans-serif; font-size: 20px; }
+  .vs-sep { color: rgba(255,255,255,0.2); }
+
+  .mensaje-ia {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-left: 3px solid var(--naranja);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: left;
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 24px;
+    min-height: 80px;
+  }
+
+  .ia-typing {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .ia-typing span {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--naranja);
+    animation: bounce 1.2s infinite;
+  }
+  .ia-typing span:nth-child(2) { animation-delay: 0.2s; }
+  .ia-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes bounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+
+  /* LEAD CAPTURE */
+  .lead-card {
+    background: linear-gradient(135deg, rgba(255,87,34,0.15), rgba(255,140,0,0.1));
+    border: 1px solid rgba(255,87,34,0.3);
+    border-radius: 20px;
+    padding: 24px 20px;
+    margin-bottom: 16px;
+  }
+
+  .lead-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    margin-bottom: 6px;
+  }
+
+  .lead-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .btn-whatsapp {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    border: none;
+    background: #25D366;
+    color: white;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 12px;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+    transition: transform 0.15s;
+  }
+  .btn-whatsapp:hover { transform: translateY(-2px); }
+
+  .btn-reto {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    border: 2px solid var(--naranja);
+    background: transparent;
+    color: white;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    margin-top: 10px;
+    transition: background 0.2s;
+  }
+  .btn-reto:hover { background: rgba(255,87,34,0.15); }
+
+  .social-proof {
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  /* METER VISUAL */
+  .meter-wrap {
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  .meter-bar {
+    height: 12px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .meter-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+    width: 0%;
+  }
+
+  .meter-fill.bueno { background: linear-gradient(90deg, #00C853, #69F0AE); }
+  .meter-fill.medio { background: linear-gradient(90deg, #FF8C00, #FFD740); }
+  .meter-fill.malo  { background: linear-gradient(90deg, #F44336, #FF6D00); }
+
+  .meter-status {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .meter-status.bueno { color: #69F0AE; }
+  .meter-status.medio { color: #FFD740; }
+  .meter-status.malo  { color: #FF6D00; }
+
+  /* FOOTER LOGO */
+  .footer-brand {
+    text-align: center;
+    padding: 24px 0;
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="logo-badge">WeDo Transformations</div>
+  <h1>¿Cuántos años<br>tiene tu <span>cuerpo</span><br>realmente?</h1>
+  <p>Descubre tu edad metabólica real y lo que tu báscula no te cuenta</p>
+  <div class="urgencia">Test gratuito · Solo 60 segundos</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+  <!-- STEP 1: Edad real -->
+  <div class="step active" id="step-1">
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Pregunta 1 de 7</span><span>14%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:14%"></div></div>
+    </div>
+    <div class="q-card">
+      <span class="q-icon">🎂</span>
+      <div class="q-title">¿Cuántos años tienes?</div>
+      <div class="q-sub">Tu edad cronológica es el punto de partida</div>
+      <div class="slider-wrap">
+        <div class="slider-value"><span id="val-edad">35</span><span class="slider-unit"> años</span></div>
+        <input type="range" min="18" max="70" value="35" id="sl-edad" oninput="document.getElementById('val-edad').textContent=this.value" />
+        <div class="slider-labels"><span>18</span><span>70+</span></div>
+      </div>
+    </div>
+    <button class="btn-next" onclick="nextStep(2)">SIGUIENTE →</button>
+  </div>
+
+  <!-- STEP 2: Peso -->
+  <div class="step" id="step-2">
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Pregunta 2 de 7</span><span>28%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:28%"></div></div>
+    </div>
+    <div class="q-card">
+      <span class="q-icon">⚖️</span>
+      <div class="q-title">¿Cuánto pesas?</div>
+      <div class="q-sub">Aproximadamente, sin zapatos</div>
+      <div class="slider-wrap">
+        <div class="slider-value"><span id="val-peso">70</span><span class="slider-unit"> kg</span></div>
+        <input type="range" min="45" max="150" value="70" id="sl-peso" oninput="document.getElementById('val-peso').textContent=this.value" />
+        <div class="slider-labels"><span>45 kg</span><span>150 kg</span></div>
+      </div>
+    </div>
+    <button class="btn-next" onclick="nextStep(3)">SIGUIENTE →</button>
+  </div>
+
+  <!-- STEP 3: Altura -->
+  <div class="step" id="step-3">
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Pregunta 3 de 7</span><span>42%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:42%"></div></div>
+    </div>
+    <div class="q-card">
+      <span class="q-icon">📏</span>
+      <div class="q-title">¿Cuánto mides?</div>
+      <div class="q-sub">En centímetros</div>
+      <div class="slider-wrap">
+        <div class="slider-value"><span id="val-altura">165</span><span class="slider-unit"> cm</span></div>
+        <input type="range" min="145" max="200" value="165" id="sl-altura" oninput="document.getElementById('val-altura').textContent=this.value" />
+        <div class="slider-labels"><span>145</span><span>200</span></div>
+      </div>
+    </div>
+    <button class="btn-next" onclick="nextStep(4)">SIGUIENTE →</button>
+  </div>
+
+  <!-- STEP 4: Energía -->
+  <div class="step" id="step-4">
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Pregunta 4 de 7</span><span>57%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:57%"></div></div>
+    </div>
+    <div class="q-card">
+      <span class="q-icon">⚡</span>
+      <div class="q-title">¿Cómo está tu energía al despertar?</div>
+      <div class="q-sub">Siendo totalmente honesta contigo</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="selectOpt(this,'energia',3)"><span class="opt-icon">🌟</span>Lista para comerse el mundo</button>
+        <button class="opt-btn" onclick="selectOpt(this,'energia',2)"><span class="opt-icon">☕</span>Necesito café pero bien</button>
+        <button class="opt-btn" onclick="selectOpt(this,'energia',1)"><span class="opt-icon">😴</span>Cansada aunque duerma</button>
+        <button class="opt-btn" onclick="selectOpt(this,'energia',0)"><span class="opt-icon">💀</span>Agotada todo el día</button>
+      </div>
+    </div>
+    <button class="btn-next" onclick="nextStep(5)" id="btn-4" style="display:none">SIGUIENTE →</button>
+  </div>
+
+  <!-- STEP 5: Digestión -->
+  <div class="step" id="step-5">
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Pregunta 5 de 7</span><span>71%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:71%"></div></div>
+    </div>
+    <div class="q-card">
+      <span class="q-icon">🍃</span>
+      <div class="q-title">¿Cómo va tu digestión?</div>
+      <div class="q-sub">El intestino es tu segundo cerebro</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="selectOpt(this,'digestion',3)"><span class="opt-icon">✅</span>Sin problemas</button>
+        <button class="opt-btn" onclick="selectOpt(this,'digestion',2)"><span class="opt-icon">💨</span>Hinchazón frecuente</button>
+        <button class="opt-btn" onclick="selectOpt(this,'digestion',1)"><span class="opt-icon">😣</span>Pesadez habitual</button>
+        <button class="opt-btn" onclick="selectOpt(this,'digestion',0)"><span class="opt-icon">🚨</span>Un desastre</button>
+      </div>
+    </div>
+    <button class="btn-next" onclick="nextStep(6)" id="btn-5" style="display:none">SIGUIENTE →</button>
+  </div>
+
+  <!-- STEP 6: Actividad -->
+  <div class="step" id="step-6">
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Pregunta 6 de 7</span><span>85%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:85%"></div></div>
+    </div>
+    <div class="q-card">
+      <span class="q-icon">🏃‍♀️</span>
+      <div class="q-title">¿Cuánto te mueves a la semana?</div>
+      <div class="q-sub">Cuenta todo: caminar, trabajo físico, deporte</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="selectOpt(this,'actividad',3)"><span class="opt-icon">💪</span>Ejercicio 4+ días</button>
+        <button class="opt-btn" onclick="selectOpt(this,'actividad',2)"><span class="opt-icon">🚶</span>Camino bastante</button>
+        <button class="opt-btn" onclick="selectOpt(this,'actividad',1)"><span class="opt-icon">🪑</span>Soy bastante sedentaria</button>
+        <button class="opt-btn" onclick="selectOpt(this,'actividad',0)"><span class="opt-icon">🛋️</span>Vida 100% sedentaria</button>
+      </div>
+    </div>
+    <button class="btn-next" onclick="nextStep(7)" id="btn-6" style="display:none">SIGUIENTE →</button>
+  </div>
+
+  <!-- STEP 7: Sueño -->
+  <div class="step" id="step-7">
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Pregunta 7 de 7</span><span>100%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+    </div>
+    <div class="q-card">
+      <span class="q-icon">🌙</span>
+      <div class="q-title">¿Cómo es tu sueño?</div>
+      <div class="q-sub">El descanso regula todo tu metabolismo</div>
+      <div class="options-grid">
+        <button class="opt-btn" onclick="selectOpt(this,'sueno',3)"><span class="opt-icon">😴</span>7-8h y me levanto bien</button>
+        <button class="opt-btn" onclick="selectOpt(this,'sueno',2)"><span class="opt-icon">😪</span>Duermo pero no descanso</button>
+        <button class="opt-btn" onclick="selectOpt(this,'sueno',1)"><span class="opt-icon">⏰</span>Menos de 6h</button>
+        <button class="opt-btn" onclick="selectOpt(this,'sueno',0)"><span class="opt-icon">😵</span>Insomnio o irregular</button>
+      </div>
+    </div>
+    <button class="btn-next" onclick="calcular()" id="btn-7" style="display:none">🔍 VER MI RESULTADO</button>
+  </div>
+
+  <!-- STEP 8: RESULTADO -->
+  <div class="step" id="step-8">
+
+    <div class="resultado-hero">
+      <p style="font-size:13px;color:rgba(255,255,255,0.45);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Tu edad metabólica</p>
+      <div class="edad-display">
+        <span class="edad-numero" id="res-edad" style="color:var(--naranja)">--</span>
+        <span class="edad-label">años</span>
+      </div>
+
+      <div class="vs-badge">
+        <div><div class="vs-real">Edad real</div><div class="vs-num" id="res-real">--</div></div>
+        <div class="vs-sep">vs</div>
+        <div><div class="vs-real">Edad metabólica</div><div class="vs-num" id="res-metabolica" style="color:var(--naranja)">--</div></div>
+      </div>
+
+      <div class="meter-wrap">
+        <div class="meter-bar"><div class="meter-fill" id="meter-fill"></div></div>
+        <div class="meter-status" id="meter-status">Calculando...</div>
+      </div>
+    </div>
+
+    <div class="mensaje-ia" id="mensaje-ia">
+      <div class="ia-typing"><span></span><span></span><span></span></div>
+    </div>
+
+    <!-- LEAD CAPTURE -->
+    <div class="lead-card">
+      <div class="lead-title">¿Quieres revertir esto?</div>
+      <div class="lead-sub">Déjame tu nombre y WhatsApp y te explico cómo el Reto WeDo puede bajar tu edad metabólica en solo 21 días.</div>
+      <input class="input-field" type="text" id="lead-nombre" placeholder="Tu nombre" />
+      <input class="input-field" type="tel" id="lead-tel" placeholder="Tu WhatsApp (ej: +34 600 000 000)" />
+      <input class="input-field" type="email" id="lead-email" placeholder="Tu email" />
+      <button class="btn-next" onclick="enviarLead()">QUIERO MI PLAN PERSONALIZADO</button>
+    </div>
+
+    <a class="btn-whatsapp" href="https://wa.me/34691206789?text=Hola!%20Hice%20el%20test%20de%20edad%20metab%C3%B3lica%20y%20quiero%20saber%20m%C3%A1s%20del%20reto%20WeDo" target="_blank">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      ESCRÍBEME POR WHATSAPP
+    </a>
+
+    <div class="social-proof">🔥 +2.400 personas ya conocen su edad metabólica</div>
+  </div>
+
+</div>
+
+<div class="footer-brand">WeDo Transformations · Herbalife Distributor</div>
+
+<script>
+  const datos = {
+    energia: null,
+    digestion: null,
+    actividad: null,
+    sueno: null
+  };
+
+  function nextStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step-' + n).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function selectOpt(el, key, val) {
+    const parent = el.closest('.options-grid');
+    parent.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+    datos[key] = val;
+    const stepNum = { energia: 4, digestion: 5, actividad: 6, sueno: 7 }[key];
+    document.getElementById('btn-' + stepNum).style.display = 'block';
+  }
+
+  function calcular() {
+    const edad    = parseInt(document.getElementById('sl-edad').value);
+    const peso    = parseInt(document.getElementById('sl-peso').value);
+    const altura  = parseInt(document.getElementById('sl-altura').value);
+
+    const bmi = peso / ((altura / 100) ** 2);
+    const bmiPenalty = Math.max(0, (bmi - 22) * 1.2);
+
+    const estiloScore = (datos.energia ?? 0) + (datos.digestion ?? 0) + (datos.actividad ?? 0) + (datos.sueno ?? 0);
+    const estiloMax = 12;
+    const estiloFactor = (estiloMax - estiloScore) * 1.5;
+
+    let edadMeta = Math.round(edad + bmiPenalty + estiloFactor);
+    edadMeta = Math.max(edad - 5, Math.min(edadMeta, edad + 20));
+
+    const diff = edadMeta - edad;
+
+    document.getElementById('res-edad').textContent = edadMeta;
+    document.getElementById('res-real').textContent = edad + ' años';
+    document.getElementById('res-metabolica').textContent = edadMeta + ' años';
+
+    const meter = document.getElementById('meter-fill');
+    const status = document.getElementById('meter-status');
+
+    setTimeout(() => {
+      if (diff <= 0) {
+        meter.style.width = '90%';
+        meter.className = 'meter-fill bueno';
+        status.className = 'meter-status bueno';
+        status.textContent = '¡Metabolismo joven!';
+        document.getElementById('res-edad').style.color = '#69F0AE';
+      } else if (diff <= 7) {
+        meter.style.width = '55%';
+        meter.className = 'meter-fill medio';
+        status.className = 'meter-status medio';
+        status.textContent = 'Hay margen de mejora';
+        document.getElementById('res-edad').style.color = '#FFD740';
+      } else {
+        meter.style.width = '25%';
+        meter.className = 'meter-fill malo';
+        status.className = 'meter-status malo';
+        status.textContent = '¡Alerta metabólica!';
+        document.getElementById('res-edad').style.color = '#FF6D00';
+      }
+    }, 300);
+
+    nextStep(8);
+    generarMensajeIA(edad, edadMeta, diff);
+  }
+
+  async function generarMensajeIA(edad, edadMeta, diff) {
+    const prompt = `Eres coach de bienestar de WeDo Transformations. Una persona tiene ${edad} años pero su edad metabólica calculada es ${edadMeta} años (diferencia de ${diff > 0 ? '+' + diff : diff} años). 
+    
+    Sus hábitos: energía ${datos.energia}/3, digestión ${datos.digestion}/3, actividad ${datos.actividad}/3, sueño ${datos.sueno}/3.
+    
+    Escribe un mensaje personalizado de máximo 3 frases: 1) Valida el resultado de forma directa y honesta. 2) Nombra el factor más crítico que está envejeciendo su metabolismo. 3) Da esperanza mencionando que el Reto WeDo de 21 días puede cambiar esto. Usa tono cálido, directo y motivador. Sin emojis. En español.`;
+
+    try {
+      const res = await fetch('/api/claude', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+      });
+      const data = await res.json();
+      const texto = data?.content?.[0]?.text || 'Tu cuerpo tiene mucho potencial de mejora. ¡El Reto WeDo de 21 días está diseñado exactamente para esto!';
+      document.getElementById('mensaje-ia').textContent = texto;
+    } catch {
+      document.getElementById('mensaje-ia').textContent = 'Tu metabolismo lleva tiempo pidiendo un cambio. El Reto WeDo de 21 días puede rejuvenecer tu edad metabólica de forma real y sostenible.';
+    }
+  }
+
+  function enviarLead() {
+    const nombre = document.getElementById('lead-nombre').value.trim();
+    const tel    = document.getElementById('lead-tel').value.trim();
+    const email  = document.getElementById('lead-email').value.trim();
+
+    if (!nombre || !tel) {
+      alert('Por favor introduce tu nombre y WhatsApp');
+      return;
+    }
+
+    const edadMeta = document.getElementById('res-edad').textContent;
+    const edadReal = document.getElementById('sl-edad').value;
+
+    const msg = encodeURIComponent(
+      `¡Hola Amaya! Acabo de hacer el test de edad metabólica. Mi nombre es ${nombre}, tengo ${edadReal} años y mi edad metabólica es ${edadMeta} años. Quiero saber más sobre el Reto WeDo.`
+    );
+
+    window.open(`https://wa.me/34691206789?text=${msg}`, '_blank');
+  }
+</script>
+</body>
+</html>
