@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>¿Qué saboteador te impide bajar de peso? | WeDo Transformations</title>
+<meta name="description" content="Descubre el archienemigo interno que sabotea tu transformación. Test gratuito WeDo Transformations." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --morado: #7B2FF7;
+    --morado2: #4A0E8F;
+    --violeta: #B44FFA;
+    --oro: #F5C842;
+    --naranja: #FF6B35;
+    --oscuro: #0A0015;
+    --oscuro2: #12002A;
+    --blanco: #FFFFFF;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--oscuro);
+    color: var(--blanco);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background:
+      radial-gradient(ellipse at 10% 10%, rgba(123,47,247,0.3) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 90%, rgba(255,107,53,0.2) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(180,79,250,0.1) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ESTRELLAS */
+  .stars {
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--d) infinite;
+    opacity: 0;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 0.8; transform: scale(1.2); }
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 36px 20px 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--morado), var(--naranja));
+    color: white;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(28px, 7vw, 44px);
+    line-height: 1.2;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #fff 0%, var(--violeta) 50%, var(--oro) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.6);
+    max-width: 320px;
+    margin: 0 auto 20px;
+    line-height: 1.6;
+  }
+
+  .misterio-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(123,47,247,0.2);
+    border: 1px solid rgba(180,79,250,0.4);
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 13px;
+    color: var(--violeta);
+    font-weight: 700;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    padding: 16px 0 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--morado), var(--naranja));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+    box-shadow: 0 0 10px rgba(123,47,247,0.6);
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 16px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* STEPS */
+  .step { display: none; }
+  .step.active { display: block; animation: revealMystery 0.5s ease; }
+
+  @keyframes revealMystery {
+    from { opacity:0; transform: translateY(24px) scale(0.97); }
+    to { opacity:1; transform: translateY(0) scale(1); }
+  }
+
+  /* PREGUNTA CARD */
+  .q-card {
+    background: rgba(123,47,247,0.08);
+    border: 1px solid rgba(180,79,250,0.2);
+    border-radius: 24px;
+    padding: 28px 20px 20px;
+    margin-top: 12px;
+  }
+
+  .q-numero {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--violeta);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .q-titulo {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 6px;
+    background: linear-gradient(135deg, #fff, var(--violeta));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .q-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 24px;
+  }
+
+  .opciones {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .opcion-btn {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 14px 16px;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s;
+    line-height: 1.4;
+  }
+
+  .opcion-btn:hover, .opcion-btn.selected {
+    background: rgba(123,47,247,0.25);
+    border-color: var(--violeta);
+    box-shadow: 0 0 20px rgba(123,47,247,0.2);
+    transform: translateX(4px);
+  }
+
+  .opcion-letra {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: rgba(123,47,247,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    color: var(--violeta);
+  }
+
+  .opcion-btn.selected .opcion-letra {
+    background: var(--morado);
+    color: white;
+  }
+
+  /* LOADING MISTERIOSO */
+  .loading-misterio {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .cristal {
+    font-size: 80px;
+    display: block;
+    margin-bottom: 24px;
+    animation: floatCristal 2s ease-in-out infinite;
+  }
+
+  @keyframes floatCristal {
+    0%, 100% { transform: translateY(0) rotate(-5deg); filter: brightness(1); }
+    50% { transform: translateY(-20px) rotate(5deg); filter: brightness(1.3); }
+  }
+
+  .loading-titulo {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    background: linear-gradient(135deg, var(--violeta), var(--oro));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+
+  .loading-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .puntos span {
+    animation: puntoBlink 1.4s infinite;
+    display: inline-block;
+    color: var(--violeta);
+  }
+  .puntos span:nth-child(2) { animation-delay: 0.2s; }
+  .puntos span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes puntoBlink {
+    0%, 80%, 100% { opacity: 0.2; }
+    40% { opacity: 1; }
+  }
+
+  /* RESULTADO */
+  .resultado-hero {
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  .saboteador-emoji {
+    font-size: 80px;
+    display: block;
+    margin-bottom: 12px;
+    animation: floatCristal 3s ease-in-out infinite;
+  }
+
+  .saboteador-nombre {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(22px, 6vw, 32px);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--oro), var(--naranja), var(--violeta));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .saboteador-subtitulo {
+    font-size: 13px;
+    color: var(--violeta);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  /* PERFIL CARD */
+  .perfil-card {
+    background: linear-gradient(135deg, rgba(123,47,247,0.15), rgba(255,107,53,0.1));
+    border: 1px solid rgba(180,79,250,0.3);
+    border-radius: 24px;
+    padding: 24px 20px;
+    margin-bottom: 16px;
+  }
+
+  .perfil-seccion {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .perfil-seccion:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .perfil-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--violeta);
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  .perfil-texto {
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.85);
+  }
+
+  .perfil-texto strong {
+    color: var(--oro);
+  }
+
+  /* PODER CARD */
+  .poder-card {
+    background: rgba(245,200,66,0.08);
+    border: 1px solid rgba(245,200,66,0.2);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .poder-icono { font-size: 28px; flex-shrink: 0; }
+
+  .poder-texto {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .poder-texto strong {
+    color: var(--oro);
+    display: block;
+    margin-bottom: 4px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* IA MENSAJE */
+  .ia-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-left: 3px solid var(--morado);
+    border-radius: 0 16px 16px 0;
+    padding: 18px 16px;
+    margin-bottom: 16px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.85);
+    min-height: 80px;
+  }
+
+  .ia-typing {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .ia-typing span {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    animation: puntoBlink 1.4s infinite;
+  }
+  .ia-typing span:nth-child(1) { background: var(--morado); }
+  .ia-typing span:nth-child(2) { background: var(--violeta); animation-delay: 0.2s; }
+  .ia-typing span:nth-child(3) { background: var(--oro); animation-delay: 0.4s; }
+
+  /* LEAD CAPTURE */
+  .lead-card {
+    background: linear-gradient(135deg, rgba(123,47,247,0.2), rgba(255,107,53,0.15));
+    border: 1px solid rgba(180,79,250,0.35);
+    border-radius: 24px;
+    padding: 24px 20px;
+    margin-bottom: 16px;
+  }
+
+  .lead-titulo {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #fff, var(--oro));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .lead-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .input-field {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 1px solid rgba(180,79,250,0.3);
+    background: rgba(123,47,247,0.1);
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    outline: none;
+    margin-bottom: 10px;
+    transition: border-color 0.2s;
+  }
+
+  .input-field:focus { border-color: var(--violeta); }
+  .input-field::placeholder { color: rgba(255,255,255,0.3); }
+
+  .btn-principal {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, var(--morado), var(--naranja));
+    color: white;
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    box-shadow: 0 4px 24px rgba(123,47,247,0.4);
+    transition: transform 0.15s;
+    letter-spacing: 1px;
+  }
+
+  .btn-principal:hover { transform: translateY(-2px); }
+
+  .btn-wa {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    background: #25D366;
+    color: white;
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.3);
+    transition: transform 0.15s;
+  }
+
+  .btn-wa:hover { transform: translateY(-2px); }
+
+  .btn-repetir {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s;
+  }
+
+  .btn-repetir:hover { color: white; border-color: rgba(255,255,255,0.3); }
+
+  .social-proof {
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 20px;
+  }
+
+  .footer-brand {
+    text-align: center;
+    padding: 24px 0;
+    font-size: 12px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+
+<!-- ESTRELLAS -->
+<div class="stars" id="stars"></div>
+
+<div class="hero">
+  <div class="badge">🔮 Test de Transformación</div>
+  <h1>¿Qué saboteador<br>te impide<br>transformarte?</h1>
+  <p>5 preguntas para revelar el archienemigo interno que sabotea tu cambio cada vez que lo intentas</p>
+  <div class="misterio-badge">🔮 Descúbrelo en 2 minutos</div>
+</div>
+
+<div class="container">
+
+  <!-- STEP 1 -->
+  <div class="step active" id="step-1">
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Pregunta 1 de 5</span><span>20%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+    </div>
+    <div class="q-card">
+      <div class="q-numero">Pregunta I</div>
+      <div class="q-titulo">Son las 7am del lunes. Suena el despertador. ¿Qué pasa por tu cabeza?</div>
+      <div class="q-sub">Sé completamente honesta contigo</div>
+      <div class="opciones">
+        <button class="opcion-btn" onclick="responder(1,'A')">
+          <div class="opcion-letra">A</div>
+          "Hoy sí que empiezo. En serio. Aunque... quizá mejor mañana."
+        </button>
+        <button class="opcion-btn" onclick="responder(1,'B')">
+          <div class="opcion-letra">B</div>
+          "Si no lo hago perfecto desde el día 1, no tiene sentido."
+        </button>
+        <button class="opcion-btn" onclick="responder(1,'C')">
+          <div class="opcion-letra">C</div>
+          "Tengo mil cosas. Esto tendrá que esperar."
+        </button>
+        <button class="opcion-btn" onclick="responder(1,'D')">
+          <div class="opcion-letra">D</div>
+          "Me siento culpable por lo de anoche pero bueno, qué le voy a hacer."
+        </button>
+        <button class="opcion-btn" onclick="responder(1,'E')">
+          <div class="opcion-letra">E</div>
+          "Total, con mi genética y mi vida, nada va a funcionar."
+        </button>
+        <button class="opcion-btn" onclick="responder(1,'F')">
+          <div class="opcion-letra">F</div>
+          "Ya lo intenté mil veces. Para qué."
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step" id="step-2">
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Pregunta 2 de 5</span><span>40%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+    </div>
+    <div class="q-card">
+      <div class="q-numero">Pregunta II</div>
+      <div class="q-titulo">Te invitan a una cena con amigos. Llevas una semana cuidándote. ¿Qué haces?</div>
+      <div class="q-sub">La respuesta más honesta gana</div>
+      <div class="opciones">
+        <button class="opcion-btn" onclick="responder(2,'A')">
+          <div class="opcion-letra">A</div>
+          "Digo que sí... y ya empezaré en serio la semana que viene."
+        </button>
+        <button class="opcion-btn" onclick="responder(2,'B')">
+          <div class="opcion-letra">B</div>
+          "Si como algo que no toca, es un fracaso total y lo dejo."
+        </button>
+        <button class="opcion-btn" onclick="responder(2,'C')">
+          <div class="opcion-letra">C</div>
+          "No tengo tiempo ni de ir. Estoy desbordada."
+        </button>
+        <button class="opcion-btn" onclick="responder(2,'D')">
+          <div class="opcion-letra">D</div>
+          "Voy, como de todo y luego me machaco mentalmente."
+        </button>
+        <button class="opcion-btn" onclick="responder(2,'E')">
+          <div class="opcion-letra">E</div>
+          "Total, con lo que me cuesta a mí, da igual lo que haga."
+        </button>
+        <button class="opcion-btn" onclick="responder(2,'F')">
+          <div class="opcion-letra">F</div>
+          "Voy porque para qué privarme si al final nada funciona."
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step" id="step-3">
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Pregunta 3 de 5</span><span>60%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+    </div>
+    <div class="q-card">
+      <div class="q-numero">Pregunta III</div>
+      <div class="q-titulo">Llevas 10 días en un programa y ves resultados lentos. ¿Qué pasa?</div>
+      <div class="q-sub">Sin filtros</div>
+      <div class="opciones">
+        <button class="opcion-btn" onclick="responder(3,'A')">
+          <div class="opcion-letra">A</div>
+          "Lo dejo para cuando tenga más motivación."
+        </button>
+        <button class="opcion-btn" onclick="responder(3,'B')">
+          <div class="opcion-letra">B</div>
+          "Si no va perfecto, algo estoy haciendo mal. Lo abandono."
+        </button>
+        <button class="opcion-btn" onclick="responder(3,'C')">
+          <div class="opcion-letra">C</div>
+          "No tengo tiempo de obsesionarme con esto."
+        </button>
+        <button class="opcion-btn" onclick="responder(3,'D')">
+          <div class="opcion-letra">D</div>
+          "Me frustro y como para consolarme."
+        </button>
+        <button class="opcion-btn" onclick="responder(3,'E')">
+          <div class="opcion-letra">E</div>
+          "Es mi cuerpo. Nunca va a responder bien."
+        </button>
+        <button class="opcion-btn" onclick="responder(3,'F')">
+          <div class="opcion-letra">F</div>
+          "Lo sabía. Nada funciona para mí."
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step" id="step-4">
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Pregunta 4 de 5</span><span>80%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+    </div>
+    <div class="q-card">
+      <div class="q-numero">Pregunta IV</div>
+      <div class="q-titulo">¿Cómo describes tu relación con tu cuerpo ahora mismo?</div>
+      <div class="q-sub">La frase que más se acerca</div>
+      <div class="opciones">
+        <button class="opcion-btn" onclick="responder(4,'A')">
+          <div class="opcion-letra">A</div>
+          "Voy a cambiar... cuando llegue el momento perfecto."
+        </button>
+        <button class="opcion-btn" onclick="responder(4,'B')">
+          <div class="opcion-letra">B</div>
+          "No me acepto si no estoy en mi peso ideal."
+        </button>
+        <button class="opcion-btn" onclick="responder(4,'C')">
+          <div class="opcion-letra">C</div>
+          "No tengo espacio mental para pensar en esto ahora."
+        </button>
+        <button class="opcion-btn" onclick="responder(4,'D')">
+          <div class="opcion-letra">D</div>
+          "Lo odio pero luego como por ansiedad. Es un círculo."
+        </button>
+        <button class="opcion-btn" onclick="responder(4,'E')">
+          <div class="opcion-letra">E</div>
+          "Es lo que hay. No puedo hacer mucho."
+        </button>
+        <button class="opcion-btn" onclick="responder(4,'F')">
+          <div class="opcion-letra">F</div>
+          "Ya no creo que pueda cambiar de verdad."
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step" id="step-5">
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Pregunta 5 de 5</span><span>100%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+    </div>
+    <div class="q-card">
+      <div class="q-numero">Pregunta V</div>
+      <div class="q-titulo">Alguien de tu entorno logra transformarse. ¿Qué sientes?</div>
+      <div class="q-sub">La primera reacción, la más honesta</div>
+      <div class="opciones">
+        <button class="opcion-btn" onclick="responder(5,'A')">
+          <div class="opcion-letra">A</div>
+          "Me alegro pero pienso: 'yo también podría... algún día.'"
+        </button>
+        <button class="opcion-btn" onclick="responder(5,'B')">
+          <div class="opcion-letra">B</div>
+          "Admiro pero siento que yo nunca lo haré tan bien."
+        </button>
+        <button class="opcion-btn" onclick="responder(5,'C')">
+          <div class="opcion-letra">C</div>
+          "Ella tiene más tiempo que yo. Yo no puedo."
+        </button>
+        <button class="opcion-btn" onclick="responder(5,'D')">
+          <div class="opcion-letra">D</div>
+          "Me da rabia conmigo misma y como para calmar esa rabia."
+        </button>
+        <button class="opcion-btn" onclick="responder(5,'E')">
+          <div class="opcion-letra">E</div>
+          "Ella tiene mejor cuerpo que yo de base. No es lo mismo."
+        </button>
+        <button class="opcion-btn" onclick="responder(5,'F')">
+          <div class="opcion-letra">F</div>
+          "Me alegro pero sé que a mí no me va a funcionar."
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP LOADING -->
+  <div class="step" id="step-loading">
+    <div class="loading-misterio">
+      <span class="cristal">🔮</span>
+      <div class="loading-titulo">Revelando tu saboteador<span class="puntos"><span>.</span><span>.</span><span>.</span></span></div>
+      <div class="loading-sub">Analizando tus patrones internos</div>
+    </div>
+  </div>
+
+  <!-- STEP RESULTADO -->
+  <div class="step" id="step-resultado">
+    <div class="resultado-hero">
+      <span class="saboteador-emoji" id="res-emoji">🔮</span>
+      <div class="saboteador-nombre" id="res-nombre">La Procrastinadora Eterna</div>
+      <div class="saboteador-subtitulo" id="res-subtitulo">Tu archienemigo interior</div>
+    </div>
+
+    <div class="perfil-card">
+      <div class="perfil-seccion">
+        <div class="perfil-label">Tu patrón</div>
+        <div class="perfil-texto" id="res-patron">Cargando...</div>
+      </div>
+      <div class="perfil-seccion">
+        <div class="perfil-label">Cómo te sabotea</div>
+        <div class="perfil-texto" id="res-sabotaje">Cargando...</div>
+      </div>
+      <div class="perfil-seccion">
+        <div class="perfil-label">Tu punto fuerte oculto</div>
+        <div class="perfil-texto" id="res-fuerte">Cargando...</div>
+      </div>
+    </div>
+
+    <div class="poder-card">
+      <div class="poder-icono">⚡</div>
+      <div class="poder-texto" id="res-poder">
+        <strong>Cómo vencer a tu saboteador</strong>
+        Cargando...
+      </div>
+    </div>
+
+    <div class="ia-card" id="ia-card">
+      <div class="ia-typing"><span></span><span></span><span></span></div>
+    </div>
+
+    <div class="lead-card">
+      <div class="lead-titulo">¿Lista para vencer<br>a tu saboteador? 🔮</div>
+      <div class="lead-sub">El Reto WeDo está diseñado específicamente para personas como tú. 21 días con seguimiento personalizado de Amaya para derrotar tu patrón de una vez.</div>
+      <input class="input-field" type="text" id="lead-nombre" placeholder="Tu nombre" />
+      <input class="input-field" type="tel" id="lead-tel" placeholder="Tu WhatsApp" />
+      <button class="btn-principal" onclick="enviarLead()">QUIERO VENCER A MI SABOTEADOR →</button>
+      <a class="btn-wa" href="https://wa.me/34691206789?text=Hola!%20Acabo%20de%20descubrir%20mi%20saboteador%20interno%20y%20quiero%20empezar%20el%20Reto%20WeDo." target="_blank" id="btn-wa">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        HABLAR CON AMAYA
+      </a>
+      <button class="btn-repetir" onclick="reiniciar()">🔄 Repetir el test</button>
+    </div>
+
+    <div class="social-proof">🔮 +3.200 saboteadores revelados esta semana</div>
+  </div>
+
+</div>
+
+<div class="footer-brand">WeDo Transformations · Herbalife Distributor</div>
+
+<script>
+const SABOTEADORES = {
+  A: {
+    emoji: '⏳',
+    nombre: 'La Procrastinadora Eterna',
+    subtitulo: 'Maestra del "mañana empiezo"',
+    patron: 'Vives en el futuro perfecto que nunca llega. Siempre hay una razón para esperar: el lunes, después de las vacaciones, cuando baje el estrés... Tu cerebro ha aprendido que posponer se siente <strong>más seguro</strong> que intentar y fallar.',
+    sabotaje: 'Te roba el presente. Cada día que pospones, tu metabolismo sigue envejeciendo y tu confianza en ti misma disminuye un poco más.',
+    fuerte: 'Eres soñadora y tienes una visión clara de quién quieres ser. Cuando canalizas esa energía en acción inmediata, eres imparable.',
+    poder: 'El antídoto es la acción imperfecta HOY. El Reto WeDo dura 21 días — no necesitas el momento perfecto, necesitas empezar.',
+    prompt: 'La persona es La Procrastinadora Eterna — siempre pospone. Genera un mensaje personalizado de máximo 3 frases que: 1) La nombre con su arquetipo, 2) Conecte con el coste real de posponer en su cuerpo, 3) La motive a actuar HOY con el Reto WeDo de 21 días. Tono: empático, misterioso y motivador. En español.'
+  },
+  B: {
+    emoji: '💎',
+    nombre: 'La Perfeccionista Implacable',
+    subtitulo: 'Todo o nada — y siempre nada',
+    patron: 'Para ti, hacerlo bien o no hacerlo. El problema es que "bien" significa perfecto, y perfecto nunca llega. Un desliz y lo abandonas todo. Tu cerebro <strong>confunde la excelencia con la parálisis</strong>.',
+    sabotaje: 'El perfeccionismo es procrastinación disfrazada de estándares altos. Te impide avanzar porque siempre hay algo que podría hacerse mejor.',
+    fuerte: 'Tu atención al detalle y tu compromiso cuando decides son extraordinarios. Cuando te permites ser imperfecta, logras más que nadie.',
+    poder: 'El progreso beats perfección. El Reto WeDo no busca perfección — busca consistencia. 21 días de avance imperfecto cambian más que un plan perfecto que nunca empieza.',
+    prompt: 'La persona es La Perfeccionista Implacable — todo o nada. Genera un mensaje de máximo 3 frases que: 1) Valide su perfeccionismo como fortaleza mal dirigida, 2) Explique que el progreso supera a la perfección, 3) La invite al Reto WeDo donde la consistencia es más importante que la perfección. Tono: empático y revelador. En español.'
+  },
+  C: {
+    emoji: '🌪️',
+    nombre: 'La CEO Desbordada',
+    subtitulo: 'Demasiado para una sola persona',
+    patron: 'Tu vida va a 200 por hora y tú siempre eres la última de la lista. Cuidas a todos menos a ti. No es falta de voluntad — es que has normalizado <strong>ponerte en último lugar</strong> y lo llamas responsabilidad.',
+    sabotaje: 'Cuando no te cuidas, tienes menos energía para todo lo demás. La paradoja es que cuidarte es lo que te haría más productiva, no menos.',
+    fuerte: 'Tu capacidad de gestión y tu entrega son extraordinarias. Imagina esa misma energía dirigida hacia tu bienestar.',
+    poder: 'El Reto WeDo necesita solo 20 minutos al día. Tú que organizas la vida de todos puedes encontrar 20 minutos para ti. Mereces estar en tu propia lista.',
+    prompt: 'La persona es La CEO Desbordada — siempre ocupada, se pone en último lugar. Genera un mensaje de máximo 3 frases que: 1) Valide su sobrecarga con empatía, 2) Explique la paradoja de que cuidarse la haría más productiva, 3) La invite al Reto WeDo con solo 20 minutos al día. Tono: cálido y revelador. En español.'
+  },
+  D: {
+    emoji: '🌊',
+    nombre: 'La Guerrera Emocional',
+    subtitulo: 'La comida como refugio',
+    patron: 'Comes cuando estás estresada, triste, ansiosa o aburrida. No es debilidad — es que aprendiste que la comida <strong>calma las emociones</strong> rápido. Tu cuerpo y tus emociones están profundamente conectados.',
+    sabotaje: 'El ciclo culpa-consuelo te atrapa. Te machacas por comer, eso genera más ansiedad, y esa ansiedad te lleva de vuelta a la comida.',
+    fuerte: 'Tu profundidad emocional es un superpoder. Las personas con tu perfil, cuando encuentran el sistema correcto, hacen transformaciones extraordinarias.',
+    poder: 'El Reto WeDo incluye nutrición que regula el cortisol — la hormona del estrés. Cuando tu cuerpo está bien nutrido, los antojos emocionales disminuyen solos.',
+    prompt: 'La persona es La Guerrera Emocional — come por emociones. Genera un mensaje de máximo 3 frases que: 1) Valide sin juzgar su relación emocional con la comida, 2) Explique cómo la nutrición correcta regula las emociones, 3) La invite al Reto WeDo. Tono: muy empático y comprensivo. En español.'
+  },
+  E: {
+    emoji: '🧬',
+    nombre: 'La Escéptica Convencida',
+    subtitulo: '"Con mi cuerpo nada funciona"',
+    patron: 'Has llegado a la conclusión de que tu cuerpo es diferente, que tu genética juega en tu contra, que tú eres la excepción a todas las reglas. Es una <strong>creencia protectora</strong> — si no lo intentas, no puedes fallar.',
+    sabotaje: 'La creencia de que nada funciona se convierte en profecía autocumplida. Tu cerebro busca evidencias de que tiene razón y las encuentra.',
+    fuerte: 'Tu pensamiento crítico es valioso. Cuando lo aplicas a buscar soluciones reales en lugar de confirmar el problema, eres devastadoramente eficaz.',
+    poder: 'Solo el 2% del sobrepeso tiene causa genética real. El Reto WeDo ha funcionado para miles de personas que decían exactamente lo mismo que tú. Los datos no mienten.',
+    prompt: 'La persona es La Escéptica Convencida — cree que su cuerpo no responde. Genera un mensaje de máximo 3 frases que: 1) Valide su escepticismo como mecanismo de protección, 2) Use el dato de que menos del 2% es genética pura, 3) La invite al Reto WeDo con evidencia real. Tono: respetuoso y basado en datos. En español.'
+  },
+  F: {
+    emoji: '🏹',
+    nombre: 'La Veterana Rendida',
+    subtitulo: 'Demasiados intentos, demasiados fracasos',
+    patron: 'Has intentado tanto y fallado tantas veces que tu cerebro ya no cree que sea posible. No es falta de fuerza — es <strong>agotamiento de esperanza</strong>. Cada intento fallido construyó una pared.',
+    sabotaje: 'La creencia de que ya lo has intentado todo te impide ver que no has probado el sistema correcto con el acompañamiento correcto.',
+    fuerte: 'Tu historial de intentos demuestra que QUIERES cambiar con una fuerza enorme. Esa determinación, bien dirigida, es tu mayor activo.',
+    poder: 'El 95% de los programas fallan porque van sin seguimiento personalizado. El Reto WeDo tiene a Amaya contigo cada día. Eso lo cambia todo.',
+    prompt: 'La persona es La Veterana Rendida — ha intentado todo y se ha rendido. Genera un mensaje de máximo 3 frases que: 1) Valide su agotamiento con mucha empatía, 2) Explique por qué el Reto WeDo es diferente a todo lo anterior (seguimiento + comunidad), 3) Le devuelva la esperanza real. Tono: muy empático y esperanzador. En español.'
+  }
+};
+
+const respuestas = {};
+let pasoActual = 1;
+
+function responder(pregunta, letra) {
+  respuestas[pregunta] = letra;
+
+  const btns = document.querySelectorAll(`#step-${pregunta} .opcion-btn`);
+  btns.forEach(b => b.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+
+  setTimeout(() => {
+    if (pregunta < 5) {
+      mostrarStep('step-' + (pregunta + 1));
+    } else {
+      mostrarStep('step-loading');
+      setTimeout(() => calcularResultado(), 2500);
+    }
+  }, 400);
+}
+
+function mostrarStep(id) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function calcularResultado() {
+  const conteo = { A:0, B:0, C:0, D:0, E:0, F:0 };
+  Object.values(respuestas).forEach(r => conteo[r]++);
+  const ganador = Object.entries(conteo).sort((a,b) => b[1]-a[1])[0][0];
+  const s = SABOTEADORES[ganador];
+
+  document.getElementById('res-emoji').textContent = s.emoji;
+  document.getElementById('res-nombre').textContent = s.nombre;
+  document.getElementById('res-subtitulo').textContent = s.subtitulo;
+  document.getElementById('res-patron').innerHTML = s.patron;
+  document.getElementById('res-sabotaje').textContent = s.sabotaje;
+  document.getElementById('res-fuerte').textContent = s.fuerte;
+  document.getElementById('res-poder').innerHTML = `<strong>Cómo vencer a tu saboteador</strong>${s.poder}`;
+
+  const msg = encodeURIComponent(`Hola! Acabo de descubrir que mi saboteador es "${s.nombre}" y quiero empezar el Reto WeDo para vencerlo.`);
+  document.getElementById('btn-wa').href = `https://wa.me/34691206789?text=${msg}`;
+
+  mostrarStep('step-resultado');
+  generarMensajeIA(ganador, s);
+}
+
+async function generarMensajeIA(tipo, s) {
+  try {
+    const res = await fetch('/api/claude', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: s.prompt })
+    });
+    const data = await res.json();
+    const texto = data?.content?.[0]?.text || s.poder;
+    document.getElementById('ia-card').textContent = texto;
+  } catch {
+    document.getElementById('ia-card').textContent = s.poder + ' El Reto WeDo existe exactamente para personas como tú. Amaya te acompaña cada día para que esta vez sea diferente.';
+  }
+}
+
+function enviarLead() {
+  const nombre = document.getElementById('lead-nombre').value.trim();
+  const tel = document.getElementById('lead-tel').value.trim();
+  if (!nombre || !tel) { alert('Por favor introduce tu nombre y WhatsApp'); return; }
+
+  const conteo = { A:0, B:0, C:0, D:0, E:0, F:0 };
+  Object.values(respuestas).forEach(r => conteo[r]++);
+  const ganador = Object.entries(conteo).sort((a,b) => b[1]-a[1])[0][0];
+  const s = SABOTEADORES[ganador];
+
+  const msg = encodeURIComponent(`Hola Amaya! Me llamo ${nombre}. Acabo de descubrir que mi saboteador es "${s.nombre}". Quiero empezar el Reto WeDo para vencerlo de una vez.`);
+  window.open(`https://wa.me/34691206789?text=${msg}`, '_blank');
+}
+
+function reiniciar() {
+  Object.keys(respuestas).forEach(k => delete respuestas[k]);
+  mostrarStep('step-1');
+}
+
+// ESTRELLAS
+const starsContainer = document.getElementById('stars');
+for (let i = 0; i < 50; i++) {
+  const star = document.createElement('div');
+  star.className = 'star';
+  star.style.cssText = `
+    left: ${Math.random() * 100}%;
+    top: ${Math.random() * 100}%;
+    --d: ${2 + Math.random() * 4}s;
+    animation-delay: ${Math.random() * 4}s;
+    width: ${1 + Math.random() * 2}px;
+    height: ${1 + Math.random() * 2}px;
+  `;
+  starsContainer.appendChild(star);
+}
+</script>
+</body>
+</html>
