@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Generador de Excusas | WeDo Transformations</title>
+<meta name="description" content="¿Cuál es tu excusa favorita para no cuidarte? Descúbrela con humor. WeDo Transformations." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;700;900&family=Patrick+Hand&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --amarillo: #FFD93D;
+    --naranja: #FF6B35;
+    --rosa: #FF3CAC;
+    --verde: #00F5A0;
+    --azul: #4ECDC4;
+    --morado: #7B2FF7;
+    --oscuro: #1A0A2E;
+    --blanco: #FFFFFF;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--oscuro);
+    color: var(--blanco);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* CONFETTI BG */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+      radial-gradient(circle at 20% 20%, rgba(255,60,172,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(78,205,196,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(123,47,247,0.1) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 32px 20px 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--rosa), var(--naranja));
+    color: white;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(38px, 10vw, 60px);
+    line-height: 1.0;
+    margin-bottom: 10px;
+  }
+
+  .hero h1 .amarillo { color: var(--amarillo); }
+  .hero h1 .rosa { color: var(--rosa); }
+
+  .hero p {
+    font-size: 16px;
+    color: rgba(255,255,255,0.7);
+    max-width: 320px;
+    margin: 0 auto 8px;
+    line-height: 1.5;
+  }
+
+  .emoji-row {
+    font-size: 28px;
+    margin: 12px 0;
+    letter-spacing: 4px;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 16px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* STEP 1 — ELEGIR EXCUSA */
+  .step { display: none; }
+  .step.active { display: block; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+  @keyframes popIn {
+    from { opacity:0; transform: scale(0.9) translateY(20px); }
+    to { opacity:1; transform: scale(1) translateY(0); }
+  }
+
+  .step-titulo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--amarillo);
+  }
+
+  .excusas-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .excusa-btn {
+    background: rgba(255,255,255,0.06);
+    border: 2px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 16px 12px;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .excusa-btn .excusa-emoji {
+    display: block;
+    font-size: 32px;
+    margin-bottom: 8px;
+  }
+
+  .excusa-btn:hover, .excusa-btn.selected {
+    transform: scale(1.05);
+    border-width: 2px;
+  }
+
+  .excusa-btn.e1:hover, .excusa-btn.e1.selected { background: rgba(255,217,61,0.2); border-color: var(--amarillo); }
+  .excusa-btn.e2:hover, .excusa-btn.e2.selected { background: rgba(255,107,53,0.2); border-color: var(--naranja); }
+  .excusa-btn.e3:hover, .excusa-btn.e3.selected { background: rgba(255,60,172,0.2); border-color: var(--rosa); }
+  .excusa-btn.e4:hover, .excusa-btn.e4.selected { background: rgba(0,245,160,0.2); border-color: var(--verde); }
+  .excusa-btn.e5:hover, .excusa-btn.e5.selected { background: rgba(78,205,196,0.2); border-color: var(--azul); }
+  .excusa-btn.e6:hover, .excusa-btn.e6.selected { background: rgba(123,47,247,0.2); border-color: var(--morado); }
+
+  /* STEP 2 — LOADING */
+  .loading-wrap {
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .loading-emoji {
+    font-size: 64px;
+    display: block;
+    animation: bounce 0.8s infinite alternate;
+    margin-bottom: 20px;
+  }
+
+  @keyframes bounce {
+    from { transform: translateY(0) rotate(-5deg); }
+    to { transform: translateY(-20px) rotate(5deg); }
+  }
+
+  .loading-texto {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--amarillo);
+    margin-bottom: 8px;
+  }
+
+  .loading-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .dots span {
+    animation: dotBlink 1.2s infinite;
+    display: inline-block;
+  }
+  .dots span:nth-child(2) { animation-delay: 0.2s; }
+  .dots span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes dotBlink {
+    0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+    40% { opacity: 1; transform: scale(1.2); }
+  }
+
+  /* STEP 3 — RESULTADO */
+  .veredicto-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .veredicto-emoji-grande {
+    font-size: 72px;
+    display: block;
+    margin-bottom: 8px;
+    animation: wiggle 0.5s ease;
+  }
+
+  @keyframes wiggle {
+    0% { transform: rotate(-10deg); }
+    25% { transform: rotate(10deg); }
+    50% { transform: rotate(-8deg); }
+    75% { transform: rotate(8deg); }
+    100% { transform: rotate(0deg); }
+  }
+
+  .veredicto-titulo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--amarillo);
+    margin-bottom: 4px;
+  }
+
+  .veredicto-subtitulo {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* MEME CARD */
+  .meme-card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .meme-top-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 2px dashed #eee;
+  }
+
+  .meme-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--rosa), var(--morado));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .meme-username {
+    font-weight: 900;
+    font-size: 14px;
+    color: #1A1A1A;
+  }
+
+  .meme-tag {
+    font-size: 11px;
+    color: #888;
+  }
+
+  .meme-excusa-text {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 18px;
+    color: #1A1A1A;
+    margin-bottom: 12px;
+    line-height: 1.4;
+    font-style: italic;
+  }
+
+  .meme-respuesta {
+    background: linear-gradient(135deg, #1A0A2E, #2D1B69);
+    border-radius: 12px;
+    padding: 14px;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+    position: relative;
+  }
+
+  .meme-respuesta::before {
+    content: '🔥';
+    display: block;
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+
+  .meme-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+  }
+
+  .meme-likes {
+    font-size: 13px;
+    color: #888;
+    display: flex;
+    gap: 12px;
+  }
+
+  .meme-brand {
+    font-size: 10px;
+    font-weight: 900;
+    color: var(--rosa);
+    letter-spacing: 1px;
+  }
+
+  /* DATO CIENTIFICO */
+  .dato-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .dato-icono {
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+
+  .dato-texto {
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.6;
+  }
+
+  .dato-texto strong {
+    color: var(--verde);
+    display: block;
+    margin-bottom: 4px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* CTA */
+  .cta-card {
+    background: linear-gradient(135deg, rgba(255,60,172,0.2), rgba(123,47,247,0.2));
+    border: 1px solid rgba(255,60,172,0.3);
+    border-radius: 20px;
+    padding: 24px 20px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .cta-titulo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    margin-bottom: 8px;
+    color: var(--amarillo);
+  }
+
+  .cta-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .btn-principal {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, var(--rosa), var(--morado));
+    color: white;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 24px rgba(255,60,172,0.4);
+    transition: transform 0.15s;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+  }
+
+  .btn-principal:hover { transform: translateY(-2px); }
+
+  .btn-compartir {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    border: 2px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: white;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: all 0.2s;
+  }
+
+  .btn-compartir:hover { background: rgba(255,255,255,0.08); }
+
+  .btn-repetir {
+    width: 100%;
+    padding: 12px;
+    border-radius: 14px;
+    border: none;
+    background: rgba(255,217,61,0.15);
+    color: var(--amarillo);
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-repetir:hover { background: rgba(255,217,61,0.25); }
+
+  /* VEREDICTO IA */
+  .veredicto-ia {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.9);
+    min-height: 60px;
+  }
+
+  .ia-typing {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .ia-typing span {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--rosa);
+    animation: dotBlink 1.2s infinite;
+  }
+  .ia-typing span:nth-child(2) { animation-delay: 0.2s; background: var(--amarillo); }
+  .ia-typing span:nth-child(3) { animation-delay: 0.4s; background: var(--verde); }
+
+  .social-proof {
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 16px;
+  }
+
+  .footer-brand {
+    text-align: center;
+    padding: 24px 0;
+    font-size: 12px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="badge">⚠️ Zona de excusas detectada</div>
+  <h1>Tu excusa<br><span class="amarillo">favorita</span><br>tiene <span class="rosa">nombre</span></h1>
+  <p>Elige la que más usas y descubre lo que realmente te está diciendo tu cerebro</p>
+  <div class="emoji-row">😅 🙈 💀 🎭 🔍</div>
+</div>
+
+<div class="container">
+
+  <!-- STEP 1: ELEGIR -->
+  <div class="step active" id="step-1">
+    <div class="step-titulo">¿Cuál es tu excusa favorita?</div>
+    <div class="excusas-grid">
+      <button class="excusa-btn e1" onclick="elegirExcusa(this, 'lunes', '😴', 'Empiezo el lunes')">
+        <span class="excusa-emoji">😴</span>
+        Empiezo el lunes
+      </button>
+      <button class="excusa-btn e2" onclick="elegirExcusa(this, 'caro', '💸', 'Es muy caro')">
+        <span class="excusa-emoji">💸</span>
+        Es muy caro
+      </button>
+      <button class="excusa-btn e3" onclick="elegirExcusa(this, 'tiempo', '⏰', 'No tengo tiempo')">
+        <span class="excusa-emoji">⏰</span>
+        No tengo tiempo
+      </button>
+      <button class="excusa-btn e4" onclick="elegirExcusa(this, 'genetica', '🧬', 'Es mi genética')">
+        <span class="excusa-emoji">🧬</span>
+        Es mi genética
+      </button>
+      <button class="excusa-btn e5" onclick="elegirExcusa(this, 'comer', '🍕', 'Me gusta comer')">
+        <span class="excusa-emoji">🍕</span>
+        Me gusta demasiado comer
+      </button>
+      <button class="excusa-btn e6" onclick="elegirExcusa(this, 'intentado', '😩', 'Ya lo intenté todo')">
+        <span class="excusa-emoji">😩</span>
+        Ya lo intenté todo
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 2: LOADING -->
+  <div class="step" id="step-2">
+    <div class="loading-wrap">
+      <span class="loading-emoji" id="loading-emoji">🔍</span>
+      <div class="loading-texto">Analizando tu excusa<span class="dots"><span>.</span><span>.</span><span>.</span></span></div>
+      <div class="loading-sub">Consultando con los expertos en excusas 😂</div>
+    </div>
+  </div>
+
+  <!-- STEP 3: RESULTADO -->
+  <div class="step" id="step-3">
+
+    <div class="veredicto-header">
+      <span class="veredicto-emoji-grande" id="res-emoji">😅</span>
+      <div class="veredicto-titulo" id="res-titulo">Archienemiga del Lunes</div>
+      <div class="veredicto-subtitulo" id="res-subtitulo">Nivel de excusa: ÉPICO</div>
+    </div>
+
+    <!-- MEME -->
+    <div class="meme-card" id="meme-card">
+      <div class="meme-top-bar">
+        <div class="meme-avatar" id="meme-avatar">😅</div>
+        <div>
+          <div class="meme-username">@excusas_pro</div>
+          <div class="meme-tag">Experta en posponerlo todo</div>
+        </div>
+      </div>
+      <div class="meme-excusa-text" id="meme-excusa-text">"Empiezo el lunes... el que viene... o el otro."</div>
+      <div class="meme-respuesta" id="meme-respuesta">
+        Llevamos 847 lunes esperando. Tu metabolismo también.
+      </div>
+      <div class="meme-footer">
+        <div class="meme-likes">
+          <span>❤️ 4.2K</span>
+          <span>😂 8.7K</span>
+          <span>😭 2.1K</span>
+        </div>
+        <div class="meme-brand">WEDO TRANSFORMATIONS</div>
+      </div>
+    </div>
+
+    <!-- VEREDICTO IA -->
+    <div class="veredicto-ia" id="veredicto-ia">
+      <div class="ia-typing"><span></span><span></span><span></span></div>
+    </div>
+
+    <!-- DATO CIENTÍFICO -->
+    <div class="dato-card">
+      <div class="dato-icono">🧠</div>
+      <div class="dato-texto" id="dato-texto">
+        <strong>Dato que duele</strong>
+        Cargando...
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-card">
+      <div class="cta-titulo">¿Y si esta vez<br>sí funciona? 🔥</div>
+      <div class="cta-sub">21 días. Sin excusas. Con resultados reales y la posibilidad de ganar $5,000 USD en premios.</div>
+      <a class="btn-principal" href="https://wa.me/34691206789?text=Hola!%20Acabo%20de%20descubrir%20mi%20excusa%20favorita%20y%20quiero%20empezar%20el%20Reto%20WeDo%20de%20verdad." target="_blank">
+        QUIERO EMPEZAR SIN EXCUSAS →
+      </a>
+      <button class="btn-compartir" onclick="compartir()">
+        📲 COMPARTIR MI EXCUSA EN STORIES
+      </button>
+      <button class="btn-repetir" onclick="reiniciar()">
+        🔄 Probar otra excusa
+      </button>
+    </div>
+
+    <div class="social-proof">😂 +5.800 excusas analizadas esta semana</div>
+  </div>
+
+</div>
+
+<div class="footer-brand">WeDo Transformations · Herbalife Distributor</div>
+
+<script>
+const EXCUSAS = {
+  lunes: {
+    emoji: '😴',
+    titulo: 'La Reina del Lunes',
+    subtitulo: 'Nivel de excusa: LEGENDARIO',
+    memeTexto: '"Empiezo el lunes... el que viene... o el otro."',
+    memeRespuesta: 'Llevamos 847 lunes esperando. Tu metabolismo también lleva la cuenta.',
+    dato: 'Los estudios muestran que las personas que "empiezan el lunes" posponen un promedio de 3.2 años antes de actuar. Tu cuerpo no puede esperar tanto.',
+    prompt: 'La persona tiene la excusa de "empiezo el lunes". Genera un veredicto gracioso, empático pero directo de máximo 3 frases que: 1) La nombre con humor como "La Reina del Lunes" o similar, 2) Desmonte la excusa con un dato real sobre la procrastinación, 3) La motive a actuar HOY con el Reto WeDo de 21 días. Tono: humor inteligente, nada cruel. En español.'
+  },
+  caro: {
+    emoji: '💸',
+    titulo: 'La Contable del No Puedo',
+    subtitulo: 'Nivel de excusa: MUY CREATIVA',
+    memeTexto: '"Es que ahora mismo no puedo permitírmelo... pero el café de 4€ sí."',
+    memeRespuesta: 'Gastas más en cafés al mes que lo que cuesta empezar el reto. Los números no mienten.',
+    dato: 'La persona media gasta más de 200€ al mes en productos de salud que no funcionan. El Reto WeDo cuesta menos que eso y sí funciona.',
+    prompt: 'La persona tiene la excusa de "es muy caro". Genera un veredicto gracioso de máximo 3 frases que: 1) La nombre con humor, 2) Use la ironía del dinero que gasta en otras cosas vs el precio del reto, 3) La motive con el ROI real del Reto WeDo y los $5,000 en premios. Tono: humor inteligente. En español.'
+  },
+  tiempo: {
+    emoji: '⏰',
+    titulo: 'La CEO de las Ocupadas',
+    subtitulo: 'Nivel de excusa: PROFESIONAL',
+    memeTexto: '"Es que no tengo tiempo... luego me pongo Netflix 3 horas."',
+    memeRespuesta: '20 minutos al día. Eso es todo lo que necesita el Reto WeDo. Tienes tiempo de sobra.',
+    dato: 'El ser humano promedio pasa 3.1 horas al día en redes sociales. El Reto WeDo necesita solo 20 minutos. La excusa del tiempo es la más popular... y la más fácil de desmontar.',
+    prompt: 'La persona tiene la excusa de "no tengo tiempo". Genera un veredicto gracioso de máximo 3 frases que: 1) La nombre con humor como "CEO de las Ocupadas", 2) Desmonte la excusa con los 20 minutos al día del reto vs tiempo en redes sociales, 3) La motive a empezar. Tono: humor inteligente. En español.'
+  },
+  genetica: {
+    emoji: '🧬',
+    titulo: 'La Nieta de Darwin',
+    subtitulo: 'Nivel de excusa: CIENTÍFICA',
+    memeTexto: '"Es que en mi familia todos somos así... genética, ya sabes."',
+    memeRespuesta: 'La genética carga la pistola, pero tus hábitos aprietan el gatillo. La ciencia lo dice, no yo.',
+    dato: 'Solo el 2% de los casos de sobrepeso tienen causa genética real. El 98% restante responde perfectamente a nutrición y hábitos. La genética es la excusa más científicamente incorrecta.',
+    prompt: 'La persona tiene la excusa de "es mi genética". Genera un veredicto gracioso de máximo 3 frases que: 1) La nombre con humor científico, 2) Use el dato real de que menos del 2% es genética pura, 3) La motive con el Reto WeDo. Tono: humor inteligente pero informativo. En español.'
+  },
+  comer: {
+    emoji: '🍕',
+    titulo: 'La Embajadora de la Pizza',
+    subtitulo: 'Nivel de excusa: DELICIOSA',
+    memeTexto: '"Es que me gusta demasiado comer... la vida es corta, ¿no?"',
+    memeRespuesta: 'Nadie te pide que dejes de comer. Te pedimos que comas mejor. Hay diferencia.',
+    dato: 'El Reto WeDo no prohíbe nada. Enseña a nutrir el cuerpo sin sacrificar el placer. Comer bien y disfrutar no son incompatibles — solo nadie te lo había explicado bien.',
+    prompt: 'La persona tiene la excusa de "me gusta demasiado comer". Genera un veredicto gracioso de máximo 3 frases que: 1) La nombre con humor foodie, 2) Aclare que el reto no prohíbe comer sino que enseña a nutrir, 3) La motive con el Reto WeDo. Tono: cálido y gracioso. En español.'
+  },
+  intentado: {
+    emoji: '😩',
+    titulo: 'La Veterana de las Dietas',
+    subtitulo: 'Nivel de excusa: CON HISTORIAL',
+    memeTexto: '"Ya lo intenté todo: Atkins, keto, ayuno, hipnosis, rezar..."',
+    memeRespuesta: 'Has probado métodos. No has probado el método correcto con el acompañamiento correcto. Esa es la diferencia.',
+    dato: 'El 95% de las dietas fracasan porque van sin seguimiento personalizado ni comunidad. El Reto WeDo combina nutrición + seguimiento + comunidad. Es estadísticamente diferente a todo lo que has probado.',
+    prompt: 'La persona tiene la excusa de "ya lo intenté todo". Genera un veredicto gracioso pero empático de máximo 3 frases que: 1) La nombre con humor validando su experiencia, 2) Explique por qué el Reto WeDo es diferente (seguimiento + comunidad + nutrición), 3) La motive con esperanza real. Tono: empático y motivador. En español.'
+  }
+};
+
+let excusaActual = null;
+
+function elegirExcusa(btn, key, emoji, texto) {
+  excusaActual = key;
+  const datos = EXCUSAS[key];
+
+  document.querySelectorAll('.excusa-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+
+  setTimeout(() => {
+    mostrarStep(2);
+    document.getElementById('loading-emoji').textContent = emoji;
+    generarVeredicto(key, datos);
+  }, 400);
+}
+
+function mostrarStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-' + n).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function generarVeredicto(key, datos) {
+  await new Promise(r => setTimeout(r, 2000));
+
+  const d = EXCUSAS[key];
+
+  document.getElementById('res-emoji').textContent = d.emoji;
+  document.getElementById('res-titulo').textContent = d.titulo;
+  document.getElementById('res-subtitulo').textContent = d.subtitulo;
+  document.getElementById('meme-avatar').textContent = d.emoji;
+  document.getElementById('meme-excusa-text').textContent = d.memeTexto;
+  document.getElementById('meme-respuesta').innerHTML = d.memeRespuesta;
+  document.getElementById('dato-texto').innerHTML = `<strong>Dato que duele</strong>${d.dato}`;
+
+  mostrarStep(3);
+
+  try {
+    const res = await fetch('/api/claude', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: d.prompt })
+    });
+    const data = await res.json();
+    const texto = data?.content?.[0]?.text || d.memeRespuesta;
+    document.getElementById('veredicto-ia').textContent = texto;
+  } catch {
+    document.getElementById('veredicto-ia').textContent = d.memeRespuesta + ' El Reto WeDo existe exactamente para personas como tú — las que han intentado de todo y merecen algo que de verdad funcione.';
+  }
+}
+
+function compartir() {
+  if (navigator.share) {
+    navigator.share({
+      title: '¡Me pillaron con mi excusa! 😂',
+      text: `Descubrí que soy "${EXCUSAS[excusaActual]?.titulo}" 🤣 ¿Cuál es la tuya?`,
+      url: window.location.href
+    });
+  } else {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      alert('¡Enlace copiado! Compártelo con tus amigas 😄');
+    });
+  }
+}
+
+function reiniciar() {
+  mostrarStep(1);
+  document.querySelectorAll('.excusa-btn').forEach(b => b.classList.remove('selected'));
+}
+</script>
+</body>
+</html>
