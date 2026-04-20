@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>¿Cuál es tu perfil de transformación? | WeDo Transformations</title>
+<meta name="description" content="Descubre tu perfil de transformación ideal. Test gratuito WeDo Transformations." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --fucsia: #E91E8C;
+    --fucsia2: #FF6EC7;
+    --azul: #1565C0;
+    --azul2: #42A5F5;
+    --azul3: #E3F2FD;
+    --blanco: #FFFFFF;
+    --gris: #F8F9FF;
+    --oscuro: #0D1B3E;
+    --texto: #1A1A2E;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--blanco);
+    color: var(--texto);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--oscuro) 0%, #1a237e 50%, #880e4f 100%);
+    padding: 40px 20px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(233,30,140,0.3) 0%, transparent 70%);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 250px; height: 250px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(66,165,245,0.25) 0%, transparent 70%);
+  }
+
+  .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 8vw, 50px);
+    line-height: 1.15;
+    margin-bottom: 14px;
+    color: white;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero h1 span { color: var(--fucsia2); }
+
+  .hero p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.7);
+    max-width: 320px;
+    margin: 0 auto 24px;
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 8px 18px;
+    font-size: 13px;
+    color: var(--fucsia2);
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 16px 60px;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    padding: 20px 0 8px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: rgba(26,26,46,0.45);
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: #EEF0FF;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--fucsia), var(--azul2));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  /* STEPS */
+  .step { display: none; }
+  .step.active { display: block; animation: slideUp 0.4s ease; }
+
+  @keyframes slideUp {
+    from { opacity:0; transform: translateY(20px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+
+  /* PREGUNTA */
+  .q-card {
+    background: var(--gris);
+    border: 1px solid #E8EEFF;
+    border-radius: 24px;
+    padding: 24px 20px;
+    margin-top: 12px;
+  }
+
+  .q-numero {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--fucsia);
+    margin-bottom: 10px;
+  }
+
+  .q-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--oscuro);
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+
+  .q-sub {
+    font-size: 13px;
+    color: rgba(26,26,46,0.5);
+    margin-bottom: 20px;
+  }
+
+  .opciones {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .opcion-btn {
+    background: white;
+    border: 2px solid #E8EEFF;
+    border-radius: 14px;
+    padding: 14px 16px;
+    color: var(--texto);
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s;
+    line-height: 1.4;
+  }
+
+  .opcion-btn:hover, .opcion-btn.selected {
+    border-color: var(--fucsia);
+    background: #FFF0F8;
+    transform: translateX(4px);
+    box-shadow: 0 2px 12px rgba(233,30,140,0.12);
+  }
+
+  .opcion-icono {
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  /* LOADING */
+  .loading-wrap {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .loading-corazon {
+    font-size: 72px;
+    display: block;
+    animation: latido 0.8s ease-in-out infinite alternate;
+    margin-bottom: 20px;
+  }
+
+  @keyframes latido {
+    from { transform: scale(1); }
+    to { transform: scale(1.15); }
+  }
+
+  .loading-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--oscuro);
+    margin-bottom: 8px;
+  }
+
+  .loading-sub {
+    font-size: 13px;
+    color: rgba(26,26,46,0.45);
+  }
+
+  .puntitos span {
+    animation: parpade 1.4s infinite;
+    display: inline-block;
+    color: var(--fucsia);
+    font-size: 18px;
+  }
+  .puntitos span:nth-child(2) { animation-delay: 0.2s; }
+  .puntitos span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes parpade {
+    0%, 80%, 100% { opacity: 0.2; }
+    40% { opacity: 1; }
+  }
+
+  /* RESULTADO */
+  .resultado-hero {
+    text-align: center;
+    padding: 28px 0 20px;
+  }
+
+  .perfil-emoji {
+    font-size: 80px;
+    display: block;
+    margin-bottom: 12px;
+    animation: latido 2s ease-in-out infinite alternate;
+  }
+
+  .perfil-nombre {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 7vw, 36px);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--fucsia), var(--azul));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .perfil-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--fucsia), var(--fucsia2));
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  /* PERFIL CARD */
+  .perfil-card {
+    background: linear-gradient(135deg, #FFF0F8, #EEF4FF);
+    border: 1px solid #FFD6EE;
+    border-radius: 24px;
+    padding: 24px 20px;
+    margin-bottom: 14px;
+  }
+
+  .perfil-seccion {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(233,30,140,0.1);
+  }
+
+  .perfil-seccion:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .perfil-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--fucsia);
+    margin-bottom: 6px;
+  }
+
+  .perfil-texto {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--texto);
+  }
+
+  .perfil-texto strong { color: var(--fucsia); }
+
+  /* RETO CARD */
+  .reto-card {
+    background: var(--oscuro);
+    border-radius: 24px;
+    padding: 24px 20px;
+    margin-bottom: 14px;
+    color: white;
+  }
+
+  .reto-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--fucsia2);
+    margin-bottom: 8px;
+  }
+
+  .reto-texto {
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  /* IA */
+  .ia-card {
+    background: white;
+    border: 1px solid #E8EEFF;
+    border-left: 3px solid var(--fucsia);
+    border-radius: 0 16px 16px 0;
+    padding: 18px 16px;
+    margin-bottom: 16px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--texto);
+    min-height: 80px;
+  }
+
+  .ia-typing {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .ia-typing span {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    animation: parpade 1.4s infinite;
+  }
+  .ia-typing span:nth-child(1) { background: var(--fucsia); }
+  .ia-typing span:nth-child(2) { background: var(--azul2); animation-delay: 0.2s; }
+  .ia-typing span:nth-child(3) { background: var(--fucsia2); animation-delay: 0.4s; }
+
+  /* LEAD */
+  .lead-card {
+    background: linear-gradient(135deg, #FFF0F8, #EEF4FF);
+    border: 1px solid #FFD6EE;
+    border-radius: 24px;
+    padding: 24px 20px;
+    margin-bottom: 14px;
+  }
+
+  .lead-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--oscuro);
+    margin-bottom: 8px;
+  }
+
+  .lead-sub {
+    font-size: 14px;
+    color: rgba(26,26,46,0.6);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .input-field {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 2px solid #E8EEFF;
+    background: white;
+    color: var(--texto);
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    outline: none;
+    margin-bottom: 10px;
+    transition: border-color 0.2s;
+  }
+
+  .input-field:focus { border-color: var(--fucsia); }
+  .input-field::placeholder { color: rgba(26,26,46,0.3); }
+
+  .btn-principal {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(135deg, var(--fucsia), var(--azul));
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    box-shadow: 0 4px 20px rgba(233,30,140,0.3);
+    transition: transform 0.15s;
+  }
+
+  .btn-principal:hover { transform: translateY(-2px); }
+
+  .btn-wa {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    background: #25D366;
+    color: white;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(37,211,102,0.25);
+    transition: transform 0.15s;
+  }
+
+  .btn-wa:hover { transform: translateY(-2px); }
+
+  .btn-repetir {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #E8EEFF;
+    background: transparent;
+    color: rgba(26,26,46,0.4);
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s;
+  }
+
+  .btn-repetir:hover { color: var(--fucsia); border-color: var(--fucsia); }
+
+  .social-proof {
+    text-align: center;
+    font-size: 13px;
+    color: rgba(26,26,46,0.35);
+    margin-top: 20px;
+  }
+
+  .footer-brand {
+    text-align: center;
+    padding: 24px 0;
+    font-size: 12px;
+    color: rgba(26,26,46,0.25);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="badge">✨ Test de Transformación WeDo</div>
+  <h1>¿Cuál es tu<br><span>perfil</span> de<br>transformación?</h1>
+  <p>5 preguntas para descubrir exactamente cómo debes empezar tu cambio</p>
+  <div class="hero-badge">💫 Resultado en 2 minutos</div>
+</div>
+
+<div class="container">
+
+  <!-- STEP 1 -->
+  <div class="step active" id="step-1">
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Pregunta 1 de 5</span><span>20%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+    </div>
+    <div class="q-card">
+      <div class="q-numero">Pregunta 1</div>
+      <div class="q-titulo">¿Qué te motiva más para empezar un cambio?</div>
+      <div class="q-sub">La respuesta más sincera es la más útil</div>
+      <div class="opciones">
+        <button class="opcion-btn" onclick="responder(1,'G')">
+          <span class="opcion-icono">🏆</span>Ver resultados rápidos y superarme a mí misma
+        </button>
+        <button class="opcion-btn" onclick="responder(1,'C')">
+          <span class="opcion-icono">🌱</span>Sentir que avanzo poco a poco sin agobiarme
+        </button>
+        <button class="opcion-btn" onclick="responder(1,'S')">
+          <span class="opcion-icono">👯</span>Tener personas con quienes compartir el proceso
+        </button>
+        <button class="opcion-btn" onclick="responder(1,'R')">
+          <span class="opcion-icono">✨</span>Sentir que estoy cambiando mi vida de verdad
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step" id="step-2">
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Pregunta 2 de 5</span><span>40%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+    </div>
+    <div class="q-card">
+      <div class="q-numero">Pregunta 2</div>
+      <div class="q-titulo">Cuando empiezas algo nuevo, ¿cómo eres?</div>
+      <div class="q-sub">Sin filtros</div>
+      <div class="opciones">
+        <button class="opcion-btn" onclick="responder(2,'G')">
+          <span class="opcion-icono">⚡</span>Me lanzo a tope desde el primer día
+        </button>
+        <button class="opcion-btn" onclick="responder(2,'C')">
+          <span class="opcion-icono">🐢</span>Prefiero ir despacio pero segura
+        </button>
+        <button class="opcion-btn" onclick="responder(2,'S')">
+          <span class="opcion-icono">📣</span>Lo cuento a todo el mundo para comprometerme
+        </button>
+        <button class="opcion-btn" onclick="responder(2,'R')">
+          <span class="opcion-icono">🦋</span>Lo vivo como un ritual de cambio personal profundo
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step" id="step-3">
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Pregunta 3 de 5</span><span>60%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+    </div>
+    <div class="q-card">
+      <div class="q-numero">Pregunta 3</div>
+      <div class="q-titulo">¿Qué es lo que más quieres conseguir?</div>
+      <div class="q-sub">Tu respuesta más honesta</div>
+      <div class="opciones">
+        <button class="opcion-btn" onclick="responder(3,'G')">
+          <span class="opcion-icono">🔥</span>Bajar peso rápido y verme diferente pronto
+        </button>
+        <button class="opcion-btn" onclick="responder(3,'C')">
+          <span class="opcion-icono">💚</span>Crear hábitos saludables que duren para siempre
+        </button>
+        <button class="opcion-btn" onclick="responder(3,'S')">
+          <span class="opcion-icono">🤝</span>Sentirme acompañada y apoyada en el proceso
+        </button>
+        <button class="opcion-btn" onclick="responder(3,'R')">
+          <span class="opcion-icono">🌟</span>Reconectarme conmigo misma y sentirme poderosa
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step" id="step-4">
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Pregunta 4 de 5</span><span>80%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+    </div>
+    <div class="q-card">
+      <div class="q-numero">Pregunta 4</div>
+      <div class="q-titulo">Un día no puedes hacer tu rutina. ¿Qué haces?</div>
+      <div class="q-sub">La primera reacción cuenta</div>
+      <div class="opciones">
+        <button class="opcion-btn" onclick="responder(4,'G')">
+          <span class="opcion-icono">💪</span>Me pongo al día al día siguiente con más intensidad
+        </button>
+        <button class="opcion-btn" onclick="responder(4,'C')">
+          <span class="opcion-icono">😌</span>Me lo perdono y continúo mañana sin dramas
+        </button>
+        <button class="opcion-btn" onclick="responder(4,'S')">
+          <span class="opcion-icono">📱</span>Busco apoyo en el grupo para no desmotivarme
+        </button>
+        <button class="opcion-btn" onclick="responder(4,'R')">
+          <span class="opcion-icono">🧘</span>Lo uso para reflexionar y reconectar con mi propósito
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step" id="step-5">
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Pregunta 5 de 5</span><span>100%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+    </div>
+    <div class="q-card">
+      <div class="q-numero">Pregunta 5</div>
+      <div class="q-titulo">¿Cómo imaginas tu transformación ideal?</div>
+      <div class="q-sub">Cierra los ojos un momento y responde</div>
+      <div class="opciones">
+        <button class="opcion-btn" onclick="responder(5,'G')">
+          <span class="opcion-icono">🏅</span>Ganar el reto, superarme y que se note mucho
+        </button>
+        <button class="opcion-btn" onclick="responder(5,'C')">
+          <span class="opcion-icono">🌿</span>Un cambio sólido, sin prisa, que dure toda la vida
+        </button>
+        <button class="opcion-btn" onclick="responder(5,'S')">
+          <span class="opcion-icono">🎉</span>Vivirlo con otras personas y celebrar juntas
+        </button>
+        <button class="opcion-btn" onclick="responder(5,'R')">
+          <span class="opcion-icono">🦅</span>Ser una versión completamente nueva de mí misma
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="step" id="step-loading">
+    <div class="loading-wrap">
+      <span class="loading-corazon">💫</span>
+      <div class="loading-titulo">Descubriendo tu perfil<span class="puntitos"><span>.</span><span>.</span><span>.</span></span></div>
+      <div class="loading-sub">Analizando tu forma única de transformarte</div>
+    </div>
+  </div>
+
+  <!-- RESULTADO -->
+  <div class="step" id="step-resultado">
+
+    <div class="resultado-hero">
+      <span class="perfil-emoji" id="res-emoji">✨</span>
+      <div class="perfil-nombre" id="res-nombre">La Guerrera</div>
+      <div class="perfil-tag" id="res-tag">Tu perfil de transformación</div>
+    </div>
+
+    <div class="perfil-card">
+      <div class="perfil-seccion">
+        <div class="perfil-label">Quién eres</div>
+        <div class="perfil-texto" id="res-quien">Cargando...</div>
+      </div>
+      <div class="perfil-seccion">
+        <div class="perfil-label">Tu superpoder</div>
+        <div class="perfil-texto" id="res-superpoder">Cargando...</div>
+      </div>
+      <div class="perfil-seccion">
+        <div class="perfil-label">Tu riesgo</div>
+        <div class="perfil-texto" id="res-riesgo">Cargando...</div>
+      </div>
+    </div>
+
+    <div class="reto-card">
+      <div class="reto-titulo" id="res-reto-titulo">El Reto WeDo para ti</div>
+      <div class="reto-texto" id="res-reto">Cargando...</div>
+    </div>
+
+    <div class="ia-card" id="ia-card">
+      <div class="ia-typing"><span></span><span></span><span></span></div>
+    </div>
+
+    <div class="lead-card">
+      <div class="lead-titulo">¿Lista para empezar<br>tu transformación? ✨</div>
+      <div class="lead-sub">Amaya diseña tu plan personalizado según tu perfil. 21 días que cambian todo.</div>
+      <input class="input-field" type="text" id="lead-nombre" placeholder="Tu nombre" />
+      <input class="input-field" type="tel" id="lead-tel" placeholder="Tu WhatsApp" />
+      <button class="btn-principal" onclick="enviarLead()">QUIERO MI PLAN PERSONALIZADO →</button>
+      <a class="btn-wa" href="https://wa.me/34691206789" target="_blank" id="btn-wa">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        HABLAR CON AMAYA
+      </a>
+      <button class="btn-repetir" onclick="reiniciar()">🔄 Repetir el test</button>
+    </div>
+
+    <div class="social-proof">💫 +2.800 perfiles descubiertos esta semana</div>
+  </div>
+
+</div>
+
+<div class="footer-brand">WeDo Transformations · Herbalife Distributor</div>
+
+<script>
+const PERFILES = {
+  G: {
+    emoji: '🔥',
+    nombre: 'La Guerrera',
+    tag: 'Resultados · Reto · Superación',
+    quien: 'Eres una mujer de acción. Necesitas ver resultados para mantenerte motivada y te encanta superarte. El reto y la competición te encienden por dentro. Cuando te propones algo, vas a por todas.',
+    superpoder: 'Tu determinación es brutal. Cuando decides empezar, nada te para. Esa energía, bien dirigida, produce transformaciones espectaculares en tiempo récord.',
+    riesgo: 'Puedes quemarte si vas demasiado fuerte desde el inicio, o frustrarte si los resultados no llegan tan rápido como quieres. El equilibrio es tu reto.',
+    reto: 'El Reto WeDo está hecho para ti: 21 días con seguimiento diario, resultados medibles y la posibilidad de ganar $5,000 USD en premios. Tu espíritu competitivo va a brillar.',
+    prompt: 'La persona es "La Guerrera" — busca resultados rápidos y superación. Genera un mensaje personalizado de máximo 3 frases que: 1) La nombre y valide su perfil competitivo, 2) Conecte con cómo el Reto WeDo potencia exactamente ese perfil, 3) La invite a empezar con urgencia. Tono: enérgico y motivador. En español.'
+  },
+  C: {
+    emoji: '🌱',
+    nombre: 'La Constante',
+    tag: 'Hábitos · Proceso · Sostenible',
+    quien: 'Eres sabia. Sabes que los cambios reales llevan tiempo y prefieres hacerlo bien que rápido. No te interesan las soluciones milagro — quieres algo que funcione de verdad y para siempre.',
+    superpoder: 'Tu constancia es imparable. Cuando encuentras un sistema que funciona, lo mantienes. Las personas con tu perfil son las que consiguen las transformaciones más duraderas.',
+    riesgo: 'A veces tu prudencia puede convertirse en lentitud excesiva. Necesitas un sistema con estructura clara para no quedarte en la parálisis del análisis.',
+    reto: 'El Reto WeDo de 21 días te da exactamente eso: estructura, seguimiento personalizado y un programa progresivo. Sin saltos bruscos. Sin agobios. Con resultados reales.',
+    prompt: 'La persona es "La Constante" — prefiere proceso gradual y sostenible. Genera un mensaje de máximo 3 frases que: 1) Valide su sabiduría al buscar cambios duraderos, 2) Explique cómo el Reto WeDo tiene la estructura que necesita, 3) La invite a empezar. Tono: calmado y confiable. En español.'
+  },
+  S: {
+    emoji: '👯',
+    nombre: 'La Social',
+    tag: 'Comunidad · Apoyo · Juntas',
+    quien: 'Para ti, todo es mejor en compañía. Necesitas sentirte parte de algo, compartir el proceso y celebrar los logros con otras personas. La soledad en el camino te desmotiva.',
+    superpoder: 'Tu capacidad de conectar y crear comunidad es un regalo. Inspiras a las que te rodean sin darte cuenta y tu energía grupal multiplica los resultados de todas.',
+    riesgo: 'Dependes demasiado de la motivación externa. Si el grupo flaquea, tú también. Necesitas desarrollar también tu motivación interna.',
+    reto: 'El Reto WeDo tiene comunidad activa, seguimiento de Amaya y un grupo donde celebrar cada logro. No vas sola — vas con todas. Eso es exactamente lo que necesitas.',
+    prompt: 'La persona es "La Social" — necesita comunidad y apoyo grupal. Genera un mensaje de máximo 3 frases que: 1) Valide su necesidad de comunidad como fortaleza, 2) Presente la comunidad del Reto WeDo como su lugar ideal, 3) La invite a unirse. Tono: cálido y cercano. En español.'
+  },
+  R: {
+    emoji: '✨',
+    nombre: 'La Renacida',
+    tag: 'Propósito · Cambio total · Poder',
+    quien: 'Para ti esto no es solo perder peso — es reconectarte contigo misma, recuperar tu poder y escribir un nuevo capítulo de tu vida. Eres una mujer profunda que busca una transformación real, no superficial.',
+    superpoder: 'Tu conexión con el propósito profundo es tu mayor motor. Cuando algo tiene significado real para ti, eres capaz de mover montañas. Tu transformación va a ser épica.',
+    riesgo: 'A veces el peso del "cambio total" puede paralizarte. Recuerda que la transformación más grande empieza con el primer paso más pequeño.',
+    reto: 'El Reto WeDo no es solo un programa de 21 días — es el inicio de una nueva versión de ti. Con Amaya a tu lado, cada día es un paso hacia la mujer que quieres ser.',
+    prompt: 'La persona es "La Renacida" — busca transformación total de vida, no solo de peso. Genera un mensaje de máximo 3 frases que: 1) Valide su búsqueda de cambio profundo, 2) Presente el Reto WeDo como el inicio de esa nueva versión, 3) La invite con poesía y fuerza. Tono: inspirador y poético. En español.'
+  }
+};
+
+const respuestas = {};
+
+function responder(pregunta, letra) {
+  respuestas[pregunta] = letra;
+  event.currentTarget.classList.add('selected');
+
+  setTimeout(() => {
+    if (pregunta < 5) {
+      mostrarStep('step-' + (pregunta + 1));
+    } else {
+      mostrarStep('step-loading');
+      setTimeout(() => calcularResultado(), 2200);
+    }
+  }, 350);
+}
+
+function mostrarStep(id) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function calcularResultado() {
+  const conteo = { G:0, C:0, S:0, R:0 };
+  Object.values(respuestas).forEach(r => conteo[r]++);
+  const ganador = Object.entries(conteo).sort((a,b) => b[1]-a[1])[0][0];
+  const p = PERFILES[ganador];
+
+  document.getElementById('res-emoji').textContent = p.emoji;
+  document.getElementById('res-nombre').textContent = p.nombre;
+  document.getElementById('res-tag').textContent = p.tag;
+  document.getElementById('res-quien').textContent = p.quien;
+  document.getElementById('res-superpoder').textContent = p.superpoder;
+  document.getElementById('res-riesgo').textContent = p.riesgo;
+  document.getElementById('res-reto').textContent = p.reto;
+
+  const msg = encodeURIComponent(`Hola! Acabo de descubrir que soy "${p.nombre}" y quiero empezar el Reto WeDo con mi plan personalizado.`);
+  document.getElementById('btn-wa').href = `https://wa.me/34691206789?text=${msg}`;
+
+  mostrarStep('step-resultado');
+  generarIA(ganador, p);
+}
+
+async function generarIA(tipo, p) {
+  try {
+    const res = await fetch('/api/claude', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: p.prompt })
+    });
+    const data = await res.json();
+    const texto = data?.content?.[0]?.text || p.reto;
+    document.getElementById('ia-card').textContent = texto;
+  } catch {
+    document.getElementById('ia-card').textContent = p.reto + ' Amaya diseña tu plan exactamente para tu perfil — no es genérico, es tuyo.';
+  }
+}
+
+function enviarLead() {
+  const nombre = document.getElementById('lead-nombre').value.trim();
+  const tel = document.getElementById('lead-tel').value.trim();
+  if (!nombre || !tel) { alert('Por favor introduce tu nombre y WhatsApp'); return; }
+
+  const conteo = { G:0, C:0, S:0, R:0 };
+  Object.values(respuestas).forEach(r => conteo[r]++);
+  const ganador = Object.entries(conteo).sort((a,b) => b[1]-a[1])[0][0];
+  const p = PERFILES[ganador];
+
+  const msg = encodeURIComponent(`Hola Amaya! Me llamo ${nombre}. Acabo de descubrir que soy "${p.nombre}". Quiero empezar el Reto WeDo con mi plan personalizado.`);
+  window.open(`https://wa.me/34691206789?text=${msg}`, '_blank');
+}
+
+function reiniciar() {
+  Object.keys(respuestas).forEach(k => delete respuestas[k]);
+  mostrarStep('step-1');
+}
+</script>
+</body>
+</html>
