@@ -1,4 +1,4 @@
-// IA de las herramientas de tuedadreal (Anthropic, cuenta de Amaya).
+// IA de las herramientas de tuedadreal. Cerebro: Groq (27/09/2026; antes Anthropic).
 // Candado (27/09/2026): solo responde a peticiones que vienen de la propia web,
 // con preguntas de tamaño normal y con las instrucciones fijas de aquí abajo.
 // Las herramientas siguen funcionando igual: mandan { prompt } y reciben la
@@ -46,25 +46,23 @@ exports.handler = async (event) => {
   }
 
   try {
-    const r = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "x-api-key": process.env.ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "claude-haiku-4-5-20251001",
-        max_tokens: 800,
-        system: SISTEMA,
-        messages: [{ role: "user", content: prompt }],
-      }),
-    });
-    const data = await r.json();
-    if (!r.ok) console.error(`[claude] Anthropic respondió ${r.status}: ${JSON.stringify(data).slice(0, 200)}`);
-    return respuesta(200, data);
+    // Cerebro: Groq (gratis) desde el 27/09/2026. Devuelve la misma forma que esperaban las herramientas.
+    for (const modelo of ["openai/gpt-oss-120b", "openai/gpt-oss-20b"]) {
+      const r = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: "Bearer " + process.env.GROQ_API_KEY },
+        body: JSON.stringify({ model: modelo, reasoning_effort: "low", max_tokens: 1200,
+          messages: [{ role: "system", content: SISTEMA }, { role: "user", content: prompt }] }),
+      });
+      const d = await r.json().catch(() => ({}));
+      const texto = d?.choices?.[0]?.message?.content?.trim();
+      if (r.ok && texto) return respuesta(200, { content: [{ type: "text", text: texto }], model: modelo });
+      console.error(`[claude] ${modelo} respondió ${r.status}`);
+    }
+    console.error("[claude] NINGÚN modelo de Groq respondió");
+    return respuesta(502, { error: "IA no disponible" });
   } catch (error) {
-    console.error(`[claude] Fallo llamando a Anthropic: ${error.message}`);
+    console.error(`[claude] Fallo llamando a Groq: ${error.message}`);
     return respuesta(500, { error: "Error interno del servidor" });
   }
 };
